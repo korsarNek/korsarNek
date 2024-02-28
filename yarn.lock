@@ -635,6 +635,11 @@
   dependencies:
     "sprintf-js" "^1.1.2"
 
+"hexo-include-markdown@^1.0.2":
+  "integrity" "sha512-WhYy+F8kawP2ANdLcF5gdLWd0gZM/Y/P1lp05J1FBWDWq2GgdGcD1VX2rderSiZUOtP/PQgRT2E5yFmCxa5+6w=="
+  "resolved" "https://registry.npmjs.org/hexo-include-markdown/-/hexo-include-markdown-1.0.2.tgz"
+  "version" "1.0.2"
+
 "hexo-log@^4.0.1":
   "integrity" "sha512-i2Sgxk8Cgx5viSjq5qW5N/rBFfwoCKQcH8qnnW1fawCapcdEAhIsq+Y3vbrs9bssyDlyU6Vqm4oQmosREaNI7Q=="
   "resolved" "https://registry.npmjs.org/hexo-log/-/hexo-log-4.1.0.tgz"

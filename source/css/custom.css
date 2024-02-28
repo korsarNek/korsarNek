@@ -1,0 +1,49 @@
+:root {
+    --dark-banner-text: black;
+    --graph-color: #0077aa;
+}
+
+[data-user-color-scheme="dark"] {
+    --graph-color: #30a9de;
+    --highlight-bg-color: #202730;
+}
+
+#subtitle, .typed-cursor {
+    font-size: 3rem;
+}
+
+.banner-text {
+    color: var(--dark-banner-text);
+}
+
+.banner-text {
+    -webkit-box-reflect: below 0px linear-gradient(to bottom, rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.6));
+    box-reflect: below 0px linear-gradient(to bottom, rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.6));
+}
+
+/* Mardown blocks */
+.markdown-body > pre {
+    background-color: var(--highlight-bg-color);
+}
+
+/* Graphs */
+.mermaid .background {
+    fill: var(--highlight-bg-color);
+}
+
+.mermaid .chart-title text, .mermaid .left-axis text, .mermaid .bottom-axis text {
+    fill: var(--text-color);
+}
+
+.mermaid .left-axis path, .mermaid .bottom-axis path {
+    stroke: var(--text-color);
+}
+
+.mermaid .plot path {
+    stroke: var(--graph-color);
+}
+
+/* Image Carousel */
+.fancybox-thumbs {
+    background: var(--highlight-bg-color);
+}

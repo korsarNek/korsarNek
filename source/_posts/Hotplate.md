@@ -1,10 +1,15 @@
 ---
-title: Hotplate
-date: 2024-02-12 23:51:57
+title: Heizplatte
+date: 2024-02-29
+comment: true
+mermaid: true
+banner_img: /img/Banner2.webp
 tags:
-    - Electronics
-    - Programming
+    - Elektronik
+    - Programmierung
+excerpt: DIY Heizplatte zum Löten. Ich werde sehr auf Details in Programmierung und Elektrotechnik eingehen und welche Herausforderungen ich dabei hatte mein erstes komplexes Elektronikprojekt abzuschließen.
 ---
+<!-- md custom_banner.md -->
 
 # DIY Heizplatte zum Löten
 
@@ -26,7 +31,10 @@ Meine Platine sollte einen [RP2040](https://www.raspberrypi.com/documentation/mi
 
 Ich hatte die Platine über KiCad erstellt und über JLCPCB 5 davon in China produzieren lassen. Bei mir habe ich eine kleine Lötstation mit Lötkolben und Heißluftpistole. Der RP2040 ist ein QFN (Quad Flat No-lead).
 
-Bild (RP2040 QFN)
+{% gi 2 2 %}
+  ![RP2040 vorne](/img/RP2040_front.webp)
+  ![RP2040 hinten](/img/RP2040_back.webp)
+{% endgi %}
 
 Das heißt es existieren Kontakte nur unter dem Chip, zu dem ist jeder Kontakt nur 0,2mm groß, was es extrem Schwer macht zu löten. Es mag nicht unmöglich sein und manche schaffen das, ich aber nicht, ich habe es versucht... Ich hatte mit der Heißluftpistole den meisten Erfolg, habe dafür den Chip aber recht lange und stark erhitzt, die Beschriftung auf dem Chip war schon verschwunden. Leider hatte der Chip nicht gebootet, ich nehme an er ist dabei kaputt gegangen. Diese Packages sind eigentlich für einen anderen Lötprozess vorgesehen, einen wo man die ganze Platine erhitzt und dadurch das Lötzinn unter dem Chip flüssig wird.
 
@@ -42,21 +50,26 @@ Ich würde die Heizplatte gerne über einen Mikrocontroller an oder ausschalten 
 
 Ich habe auch diverse Transistoren rumliegen, keinen für Netzspannung, aber der BT136 ist dafür geeignet und günstig. Was mir noch fehlte ist ein Optokoppler der mit Netzspannung zurecht kommt. Der PC817 hat einen Transistor der bis zu 35V aushält, Netzspannung beträgt 230V [RMS](https://en.wikipedia.org/wiki/Root_mean_square), das sind maximal ~310V. (Spannungspitze einer RMS-Spannung ist $√2*V$). Das selbe muss der Optokoppler auch in die entgegengesetzte Richtung aushalten, normale Transistoren funktionieren in eine Richtung besser als die andere. Der BT136 ist eine spezielle Art von Transistor die sich Triac nennt, das ist ein speziell konstruierter Transistor der für Wechselspannungen geeignet ist, so etwas brauche ich für einen Optokoppler und das habe ich gefunden im MOC3021M.
 
-Bild (PC817)
-
-Bild (BT136)
-
-Bild (MOC3021M)
+{% gi 3 3 %}
+  ![BT136](/img/BT136.webp)
+  ![PC817](/img/PC817.webp)
+  ![MOC3021M](/img/MOC3021M.webp)
+{% endgi %}
 
 ### Design
 
 Ich wollte ein Heizelement oben auf einer Box, mit 4 Knöpfen zum Steuern, einem Display und USB-Anschluss zum Auslesen von Daten. Was ich beim Löten des RP2040 gefunden habe ist, dass viele komplexere elektronische Komponenten für eine bestimmte Dauer auf einer bestimmten Temperatur geheizt werden müssen, um sicher zu stellen, dass die Komponente beim Lötvorgang nicht zerstört wird. Diese Heizmodelle wollte ich auf einen USB-Stick packen um leicht neue Modelle verwenden zu können. Zudem musste noch ein Anschluss für die Netzspannung ran. Innerhalb der Box würde ich die Netzspannung dann über ein internes Netzteil auf etwas reduzieren mit dem der RP2040 arbeiten kann.
 
-Bild (Heizkurve RP2040)
+![RP2040 Heizmodell](/img/RP2040_curve.webp)
 
-Ich habe dann damit angefangen die Komponenten die ich bereits hatte in Blender zu übertragen und damit ein 3D Modell zu erstellen.
+Ich habe dann damit angefangen die Komponenten die ich bereits hatte in Blender zu übertragen und damit ein 3D Modell zu erstellen. Ich habe auch die Platine in KiCad gemacht und das 3D Modell davon in Blender importiert.
 
-Bild (3D Modell)
+{% gi 3 1-2 %}
+  ![3D Modell](/img/Hotplate_3dmodel.webp)
+  ![KiCad Vorne](/img/Hotplate_kicad_v1_front.webp)
+  ![KiCad hinten](/img/Hotplate_kicad_v1_back.webp)
+{% endgi %}
+
 
 ## Probleme auf dem Weg
 
@@ -64,7 +77,7 @@ Bild (3D Modell)
 
 Ich hatte mich zuerst für den Arduino Pro Micro entschieden, ich hatte zwar Arduinos rumliegen, aber noch nie tatsächlich etwas mit einem Arduino gemacht.
 
-Bild (Arduino Pro Micro)
+![Arduino Pro Micro](/img/Arduino_pro_micro.webp)
 
 Ich habe mit der Arduino IDE ein kleines Programm geschrieben, dass eine UI auf dem Display anzeigen, die 4 Eingabeknöpfe verarbeiten konnte und über einen Thermistor die Temperatur auslesen konnte.
 
@@ -72,9 +85,9 @@ Thermistoren sind elektrische Widerstände die ein genau definiertes Verhalten b
 
 Leider kann der Arduino Micro Pro nicht als USB-Host fungieren, also keine USB-Sticks auslesen, dafür hätte ich einen anderen Mikrocontroller gebraucht. Daher ich eh mehr mit dem RP2040 arbeiten will habe ich mich für einen Waveshare RP2040-zero entschieden, eine sehr kleine Platine mit einem deutlich Leistungsstärkeren Prozessor und ganzen 200kB RAM anstelle von nur 2kB im Vergleich zu meinem Arduino. Von der Größe her ist der dem Arduino Pro Micro auch ähnlich genug, dass ich dafür die selbe Halterung verwenden kann und kein neues Gehäuse dafür drucken muss.
 
-Bild (Waveshare RP2040-zero)
+![Waveshare RP2040-zero](/img/Waveshare_RP2040_front.webp)
 
-Bild (gedrucktes Gehäuse)
+![Heizplatte](/img/Hotplate_printed.webp)
 
 Die 2kB RAM waren durch das Grafikinterface leider schon recht schnell erschöpft und ich hatte Schwierigkeiten alle Texte und Bilder in den Speicher zu bekommen. Der RP2040 kommt auch mit ganzen 120Mhz und mehreren Kernen her, anstelle von nur 16Mhz und einem Kern, ein willkommenes Upgrade.
 
@@ -153,11 +166,20 @@ Also habe ich mit etwas rumprobieren, versucht meinen eigenen Algorithmus zu ers
 
 Beim PID-Tuning wird das Heizelement erst einmal in einem [Bang-Bang-Modus](https://control.com/textbook/closed-loop-control/onoff-control/) betrieben, währenddessen werden einige Daten gesammelt und aus diesen Daten berechnet ein Algorithmus die PID-Faktoren.
 
-Bild (Bang-Bang Kurve)
+{% gi 2 2 %}
+  ![](/img/bangbang1.webp)
+  ![](/img/bangbang2.webp)
+{% endgi %}
 
 Angefangen habe ich damit, den Algorithmus so zu entwerfen wie ich PID und Heizkurven verstehe. Logisch heranzugehen was nach meinem Verständnis dazu beitragen würde eine gute saubere Kurve zu erzeugen, natürlich hat mich das nicht sehr weit gebracht. So bin ich dann dazu übergegangen Zahlen miteinander zu kombinieren die mich nahe an die Werte heranbringen die ich erwarte. Ich hatte mehrere Szenarien die auf bestimmte Art nicht funktionierten und mit den Graphen von crystalinstruments konnte ich abschätzen welcher Faktor in etwa in welche Richtung angepasst werden müsste um das zu lösen. Dann habe ich geschaut welche Werte spezifisch zu den Szenarien sind die nicht funktionieren und die dann versucht mit zu verrechnen bis ich ein gutes Ergebnis bekam. Am Ende habe ich eigentlich nicht mehr verstanden was ich tue, aber das Ergebnis war gut. Es hat alle meine Testszenarien erfüllt, bei ein paar Szenarien hätten die Werte etwas optimaler sein können, aber mit dieser Methode löse ich das auch nur annäherungsweise, es ist keine ganz korrekte Methode und das letzte bisschen rauszuholen ist recht aufwendig. So die klassische 80/20-Regel, mit 20% des Aufwandes komme ich so etwa 80% zur Lösung, die restlichen 20% würden aber 80% der Zeit dauern und es ist aktuell gut genug.
 
-Bilder von Graphen
+{% gi 5 2-3 %}
+  ![](/img/Test1.webp)
+  ![](/img/Test2.webp)
+  ![](/img/Test3.webp)
+  ![](/img/Test6.webp)
+  ![](/img/Test_HotPlate.webp)
+{% endgi %}
 
 ### Sinuswelle zu Leistung
 
@@ -169,13 +191,12 @@ Eine höhere Frequenz für das PWM anzusetzen wäre auch nicht möglich gewesen 
 
 Mit dem RP2040 bestimmte ich dann die Wartezeit um den Triac bei zum Beispiel 50% der Sinuswelle der Netzspannung anzuschalten für meine 50% Leistung. Die Leistung die das Heizelement bekommt, hängt aber genau genommen von der Fläche unterhalb der Sinuswelle bis zum Nullpunkt ab (bzw. oberhalb falls wir in der anderen Hälfte der Sinuswelle sind).
 
-Bild Sinuswelle Netzspannung
-
 Bei 0%, 50% und 100% ist der Zeitpunkt an dem der Triac an geschalten werden muss gleich der Fläche, in allen anderen Fällen gibt es aber eine gewisse Abweichung. 
 
-Bild Sinusintegral und Prozentposition
+![Sinuskurve](/img/Sinus_graph.webp)
+[Interaktiver Link](https://www.desmos.com/calculator/t0subox9jh)
 
-Nach etwas Recherche habe ich Formeln gefunden wo man die Fläche einer Sinuskurve berechnen kann, die an einem bestimmten Punkt abgeschnitten wurde. Das Problem war, ich suche das Gegenteil, eine Formel um anhand der Fläche den Punkt zu finden wo die Sinuskurve abgeschnitten werden kann. Ich hatte Formeln umstellen in der Schule, ich habe aber nie eine so komplizierte Formel umgestellt und anstatt es erst einmal selbst zu probieren, habe ich mich an ChatGPT gewannt.
+Nach etwas Recherche habe ich Formeln gefunden wo man die Fläche eines Segmentes eines Kreises berechnen kann, der an einem bestimmten Punkt abgeschnitten wurde. Das Problem war, ich suche das Gegenteil, eine Formel um anhand der Fläche den Punkt zu finden wo die Sinuskurve abgeschnitten werden kann. Ich hatte Formeln umstellen in der Schule, ich habe aber nie eine so komplizierte Formel umgestellt und anstatt es erst einmal selbst zu probieren, habe ich mich an ChatGPT gewannt.
 
 $Asegment = r² × arccos((r-h)/r) - (r-h) × √(2 × r × h - h²)$
 
@@ -183,7 +204,29 @@ Was eine gute Idee war, denn die Antwort die es mir gab war, dass es keine gesch
 
 Nach etwas nachfragen bei ChatGPT, habe ich über die [Bisection](https://en.wikipedia.org/wiki/Bisection_method)-Methode gelernt, mit etwas Starthilfe von ChatGPT und Stackoverflow habe ich dann in C# eine Bisection-Methode für die Formel geschrieben, die mir dann in 5% Schritten die Werte ausgibt die ich brauche. In der Firmware für die Heizplatte würde ich dann diese Tabelle nehmen und die restlichen Zwischenschritte einfach interpolieren. Ich hatte auch nach einer Bibliothek geschaut die Bisection schon kann, aber mit ChatGPT ging das eigentlich so schnell, dass es wahrscheinlich länger gedauert hätte eine funktionierende Bibliothek zu finden und anzubinden.
 
-Der Unterschied ist klein und diese Zahlen hatte ich noch nicht bevor ich das Problem gelöst hatte. Ich hatte erwartet, dass es signifikanter wäre und hätte einfach die direkten Prozente genommen wenn ich es vorher geahnt hätte.
+Der Unterschied zwischen dem Prozent der Fläche der Sinuskurve und den Prozent entlang der X-Achse der Periode einer Sinuskurve, war mit der Methode sehr gering. Häufig nur 5% bis es dann zur Mitte hin konvergiert.
+Den Unterschied der Prozentzahlen zwischen Fläche und X-Punkt hatte ich mir deutlich größer vorgestellt und es schien vollkommen unnötig, dass ich mir die Mühe gemacht hatte.
+
+```mermaid
+xychart-beta
+title "Bisection Kreissegment"
+x-axis "Fläche-Prozent" [0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5]
+y-axis "X-Achse-Prozent" 0 --> 0.5
+line [0, 0.097308171540498765, 0.15647558420896526, 0.20743129178881647, 0.25406906604766843, 0.2980136349797249, 0.34015423953533175, 0.3810587957501413, 0.42113191485404966, 0.46068957000970834, 0.4999999850988388]
+```
+
+Die Formeln und die Empfehlung von ChatGPT klang für mich auch recht sinnvoll. Die Fläche eines Einheitskreise sollte gleich der Fläche unter einer Periode der Sinuskurve sein, wenn man zum Beispiel bei einem Integral die Fläche absolut nimmt, und nicht die negative Seite der Sinuskurve wieder abzieht. Irgendwo hatte sich da aber ein Fehler eingeschlichen, der mir damals nicht aufgefallen war.
+
+```mermaid
+xychart-beta
+title "Integral Sinuswelle"
+x-axis "Fläche-Prozent" [0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5]
+y-axis "X-Achse-Prozent" 0 --> 0.5
+line [0, 0.00615582970243, 0.0244717418524, 0.0544967379058, 0.0954915028125, 0.146446609407, 0.206107373854, 0.27300475013, 0.345491502812, 0.42178276748, 0.5]
+```
+
+Diese Visualisierung hatte ich damals nicht gemacht, erst für diesen Blog. Hätte ich das gemacht, hätte ich gesehen, dass ich die Formel nur ein bisschen hätte anpassen müssen, weil meine Werte entlang der Diagonalen gespiegelt waren.
+Ich habe das alles am Ende aber gar nicht gebraucht, weil ich wie weiter unten beschrieben, dann ein ganz anderes System gewählt habe.
 
 ## Die Teile zusammenfügen
 
@@ -201,15 +244,11 @@ Wieso? Das fragte ich mich die nächsten Wochen häufiger.
 
 Ich habe den Mikrocontroller ausgetauscht, bin von Arduino IDE nach Platform.IO gewechselt und benutze ein anderes Framework um den RP2040 zu steuern. Irgendwo dort sollte der Fehler sein, ich habe mir etwas den Quellcode des neuen Frameworks angeschaut, bin daraus aber nicht schlau geworden und habe mich entschieden zu versuchen einen debugger einzurichten. Eine Methode, dass mit einem RP2040 zu machen ist es ein Debug-Probe zu verwenden.
 
-Bild DebugProbe
+![Debug Probe](/img/Debug_probe.webp)
 
-Nachdem ich die Firmware dafür kompiliert und übertragen hatte, musste ich den Debug-Probe noch anschließen, an SWDIO und SWDCLK Pins anschließen. Leider sind diese Pins auf dem Waveshare RP2040-zero winzig, etwa 1mm x 1mm.
+Nachdem ich die Firmware dafür kompiliert und übertragen hatte, musste ich den Debug-Probe noch anschließen, an SWDIO und SWDCLK Pins anschließen. Leider sind diese Pins auf dem Waveshare RP2040-zero winzig, etwa 1mm x 1mm. Da Kabel anzulöten hat sich für mich als zu schwierig erwiesen, weil ich dabei ein Pad abgerissen habe.
 
-Bild Waveshare RP2040-zero mit hervorgehobenen Pads
-
-Da Kabel anzulöten hat sich für mich als zu schwierig erwiesen, weil ich dabei ein Pad abgerissen habe.
-
-Bild mit abgerissenem Pad
+![Waveshare RP2040-zero](/img/Waveshare_RP2040_back.webp)
 
 Das nächste war einen neuen Mikrokontroller zu kaufen. Die RaspberryPi Zero sind günstiger als die Waveshare-Variante, dafür aber deutlich größer als der Waveshare oder der Arduino Pro Micro. Der neuen Chip würde nicht sauber in das Gehäuse passen, das war jetzt aber egal, ich wollte vorwärts kommen.
 
@@ -223,11 +262,9 @@ Es gibt jetzt noch das Problem, warum kam es zu einem timeout beim Übertragen d
 
 Software-seitig hat also alles funktioniert, aus irgendeinem Grund kamen die Pakete nicht an, um das herauszufinden, versuchte ich als nächstes die Hardware zu debuggen. Mein größter Freund dabei war, ein [Oszilloskop](https://de.wikipedia.org/wiki/Oszilloskop) an die Datenleitung anzuschließen und zu schauen was da abgeht.
 
-Bild Graph Oszilloskop
+![Oszilloskop](/img/Oszilloskop.webp)
 
 Glücklicherweise kann mein Oszilloskop ein paar verschiedene Hardware-Protokolle verstehen, darunter auch I²C. Damit hatte sich gezeigt, dass die meisten Pakete vollständig sind, tatsächlich werden alle Pakete korrekt gesendet, ein Detail des I²C Protokolls ist aber, dass jedes Paket vom Empfänger bestätigt werden muss durch runterziehen der Datenleitung auf 0 Volt. Der Display versucht das, schafft nach einigen Paketen aber nur noch so 1-2 Volt, welche vom Mikrokontroller dann als nicht empfangen interpretiert werden, was dann den Sendungsvorgang durcheinander bringt.
-
-Bild von nicht runtergezogenem Volt für Packetbestätigung
 
 Nacht etwas herumexperimentieren hat sich herausgestellt, dass der Fehler auf 2 Problemen basiert, die gemeinsam gelöst werden mussten. Das erste Problem war, ich habe den Mikrokontroller und Display über die 5V vom USB-Anschluss betrieben. Der RP2040 hat aber eine eigene 3.3V Stromversorgung an Bord und sämtliche IO-Kommunikation läuft über 3.3V. Daher der Display aber mit 5V betrieben wurde, hat er angenommen, dass die Kommunikation auch mit 5V läuft und hatte Probleme gute Signale mit einer 3.3V Leitung zu senden.
 Der Arduino Pro Micro ist ein 5V System, wodurch es dort wohl nicht zu Problemen kam, weil die Spannung der Stromversorgung gleich der Spannung der Kommunikation war.
@@ -257,5 +294,8 @@ Etwas das ich für zukünftige Projekte auch anpassen werde ist es deutlich gro�
 
 Etwas, das ich Zukunft lernen muss, ist es nicht am Anfang schon zu tief zu gehen, um zu verhindern, dass ich an Teilen arbeite die sich dann als unnötig herausstellen, wie die Leistung der Sinuswelle.
 
-Bilder KiCad
-Bild Blender
+{% gi 3 1-2 %}
+  ![3D Modell](/img/Hotplate_3dmodel_nicer.webp)
+  ![KiCad V2 vorne](/img/Hotplate_kicad_v2_front.webp)
+  ![KiCad V2 hinten](/img/Hotplate_kicad_v2_back.webp)
+{% endgi %}
