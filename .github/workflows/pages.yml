@@ -28,7 +28,7 @@ jobs:
       - name: Install Dependencies
         run: npm install
       - name: Build
-        run: npm run build
+        run: touch db.json && npm run build #db.json is needed by hexo-include-markdown
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v2
         with:
