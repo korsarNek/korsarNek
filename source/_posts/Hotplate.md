@@ -88,9 +88,7 @@ Thermistors are electrical resistors that have a precisely defined behavior at d
 
 Unfortunately, the Arduino Micro Pro cannot function as a USB host, so it cannot read USB sticks. For that, I would have needed a different microcontroller. Therefore, since I wanted to work more with the RP2040 anyway, I decided on a Waveshare RP2040-zero, a very small board with a much more powerful processor and a whole 200kB of RAM instead of just 2kB compared to my Arduino. In terms of size, the RP2040 is also similar enough to the Arduino Pro Micro that I can use the same mount for it and don't have to print a new case.
 
-![Waveshare RP2040-zero](/img/Wav
-
-eshare_RP2040_front.webp)
+![Waveshare RP2040-zero](/img/Waveshare_RP2040_front.webp)
 
 ![Heating Plate](/img/Hotplate_printed.webp)
 
@@ -118,7 +116,7 @@ Following [code](https://github.com/adafruit/Adafruit_TinyUSB_Arduino/blob/e2918
 class Adafruit_USBH_MSC_BlockDevice : public FsBlockDeviceInterface {
 ```
 
-With the [macros](https://learn.microsoft.com/en-us/cpp/preprocessor/macros-c-cpp?view=msvc-170), you can basically redefine anything, and it is often used to make dependencies interchangeable, in this case, `FsBlockDeviceInterface`, which is not a class that exists in the code but a macro that acts as a placeholder for a class. The code is only supposed to be compiled if there is a file named "SdFat.h" in the code, whether in your own code or in a used library. The library that has an SdFat.h should also define an `FsBlockDeviceInterface`. This is initially a very shaky construct and requires either good documentation or someone to dig through the code. The documentation was of course sparse. 
+With [macros](https://learn.microsoft.com/en-us/cpp/preprocessor/macros-c-cpp?view=msvc-170), you can basically redefine anything, and it is often used to make dependencies interchangeable, in this case, `FsBlockDeviceInterface`, which is not a class that exists in the code but a macro that acts as a placeholder for a class. The code is only supposed to be compiled if there is a file named "SdFat.h" in the code, whether in your own code or in a used library. The library that has an SdFat.h should also define an `FsBlockDeviceInterface`. This is initially a very shaky construct and requires either good documentation or someone to dig through the code. The documentation was of course sparse. 
 
 The first error looked like this:
 ```
@@ -167,7 +165,7 @@ A common method to find the 3 different factors for PID is to try it out manuall
 
 I started by writing a kind of simulator in C#. A heating element that heats up and transfers the temperature to the environment at a certain rate, also transferring it to the sensor. The rate depends on the temperature difference between the involved objects. Fortunately, this was written quite quickly and I had a simulation that spat out graphs that looked similar to the curves from the 3D printer. The most complicated part of the software was finding a library that draws me a graph, via the command line, on Linux, in C#.
 
-I tried two different algorithms, [Ziegler-Nichols](https://de.wikipedia.org/wiki/Faustformelverfahren_%28Automatisierungstechnik%29) and the one from [Marlin](https://github.com/MarlinFirmware/Marlin/blob/9e879a5b1f801e7572e7948be38a6dad16ad35d8/Marlin/src/module/temperature.cpp#L673). Both did not give good results in my simulator, it could be that I made mistakes in the implementation, I also did not like that there are magic numbers in the methods without explanation
+I tried two different algorithms, [Ziegler-Nichols](https://en.wikipedia.org/wiki/Ziegler%E2%80%93Nichols_method) and the one from [Marlin](https://github.com/MarlinFirmware/Marlin/blob/9e879a5b1f801e7572e7948be38a6dad16ad35d8/Marlin/src/module/temperature.cpp#L673). Both did not give good results in my simulator, it could be that I made mistakes in the implementation, I also did not like that there are magic numbers in the methods without explanation
 
 . It was not comprehensible to me.
 
@@ -251,7 +249,7 @@ A problem I had with the Arduino was that it cannot do pull-downs. This was rele
 
 ### The Display
 
-I had already replaced the Arduino with an RP2040, the [display](https://www.az-delivery.de/products/1-3zoll-i2c-oled-display?variant=6571890704411) worked fine with the Arduino, but flickered heavily with the RP2040.
+I had already replaced the Arduino with an RP2040, the [display](https://www.az-delivery.de/en/products/1-3zoll-i2c-oled-display?variant=6571890704411) worked fine with the Arduino, but flickered heavily with the RP2040.
 
 Why? I asked myself that more often over the next few weeks.
 
@@ -265,7 +263,7 @@ After I compiled and transferred the firmware for it, I had to connect the Debug
 
 The next thing was to buy a new microcontroller. The RaspberryPi Zeros are cheaper than the Waveshare variant, but much larger than the Waveshare or the Arduino Pro Micro. The new chip would not fit neatly into the case, but that was now irrelevant, I wanted to move forward.
 
-The display is controlled by the hardware protocol [I²C](https://www.mikrocontroller.net/articles/I%C2%B2C). I can reduce the transmission speed via the software, then you see how the image builds up slowly, then flickers very fast, and then continues. My guess was that some commands are being transmitted to the display that it cannot handle, causing it to flicker during image build-up. With the debugger, I wanted to see which code was being executed that might be causing problems, until then I hadn't found anything in the code that looked like wrong commands. As soon as the debugger was connected, however, the display turned off. I had imagined that differently. The display is actually supposed to be able to transfer an image once and it stays until new data is sent. The more strange, then, that the display suddenly turned off when the debugger took control of the microcontroller's code.
+The display is controlled by the hardware protocol [I²C](https://www.circuitbasics.com/basics-of-the-i2c-communication-protocol/). I can reduce the transmission speed via the software, then you see how the image builds up slowly, then flickers very fast, and then continues. My guess was that some commands are being transmitted to the display that it cannot handle, causing it to flicker during image build-up. With the debugger, I wanted to see which code was being executed that might be causing problems, until then I hadn't found anything in the code that looked like wrong commands. As soon as the debugger was connected, however, the display turned off. I had imagined that differently. The display is actually supposed to be able to transfer an image once and it stays until new data is sent. The more strange, then, that the display suddenly turned off when the debugger took control of the microcontroller's code.
 
 It had been a few days of debugging when I found something in the framework in a class that deals with I²C communication, where you can set a timeout for the communication. I disabled the timeout logic and suddenly my display no longer turned off when the debugger kicked in. The flickering was also suddenly gone. It turns out that the timeout itself was executed even when the debugger took control and the timeout caused the I²C connection to be closed by the class and the display to turn off as a result.
 
@@ -273,9 +271,7 @@ Very annoying, a timeout that I did not set and is counterproductive to me, was 
 
 There is still the problem, why was there a timeout in the transmission of the data? The flickering was gone and I could interrupt the image build-up with the debugger, unfortunately, it then turned out that not all image data was transmitted cleanly. The library I use to draw the interface and determines which commands are transmitted via I²C is [u8g2](https://github.com/olikraus/u8g2). This does not transfer the image in a single I²C packet but divides it into smaller blocks so as not to consume too much memory. If there was an I²C error, the block was not displayed and the image then shifted. With the flickering, the problem did not occur, as it later turned out that the transmission during the first image build-up runs cleanly, but then breaks down shortly thereafter. With the flickering, it could still build the first image, then had an error, restarted the display, and could then often, but not always, cleanly transfer an image again. However, if the display was on for a longer time, there were only errors. The constant switching on and off of the display was the flickering.
 
-So everything worked software-wise, for some reason, the packets did not arrive, to find out why, I tried to debug the hardware next. My biggest friend in this was to connect an
-
- [oscilloscope](https://de.wikipedia.org/wiki/Oszilloskop) to the data line and see what was going on there.
+So everything worked software-wise, for some reason, the packets did not arrive, to find out why, I tried to debug the hardware next. My biggest friend in this was to connect an [oscilloscope](https://en.wikipedia.org/wiki/Oscilloscope) to the data line and see what was going on there.
 
 ![Oscilloscope](/img/Oszilloskop.webp)
 
