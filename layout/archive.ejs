@@ -1,0 +1,12 @@
+<%
+page.layout = "archive"
+page.title = theme.archive.title || __('archive.title')
+page.subtitle = theme.archive.subtitle || __('archive.subtitle')
+page.banner_img = theme.archive.banner_img
+page.banner_img_height = theme.archive.banner_img_height
+page.banner_mask_alpha = theme.archive.banner_mask_alpha
+page.posts = lang_posts(page.language)
+page.custom_css = theme.archive.custom_css
+%>
+
+<%- partial('_partials/archive-list.ejs', { params: { key: page.layout, postTotal: page.posts.length } }) %>

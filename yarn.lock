@@ -507,6 +507,11 @@
     "statuses" "~1.5.0"
     "unpipe" "~1.0.0"
 
+"flag-icons@^7.1.0":
+  "integrity" "sha512-AH4v++19bpC5P3Wh767top4wylJYJCWkFnvNiDqGHDxqSqdMZ49jpLXp8PWBHTTXaNQ+/A+QPrOwyiIGaiIhmw=="
+  "resolved" "https://registry.npmjs.org/flag-icons/-/flag-icons-7.1.0.tgz"
+  "version" "7.1.0"
+
 "form-data@^4.0.0":
   "integrity" "sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww=="
   "resolved" "https://registry.npmjs.org/form-data/-/form-data-4.0.0.tgz"
@@ -634,11 +639,6 @@
   "version" "2.0.0"
   dependencies:
     "sprintf-js" "^1.1.2"
-
-"hexo-include-markdown@^1.0.2":
-  "integrity" "sha512-WhYy+F8kawP2ANdLcF5gdLWd0gZM/Y/P1lp05J1FBWDWq2GgdGcD1VX2rderSiZUOtP/PQgRT2E5yFmCxa5+6w=="
-  "resolved" "https://registry.npmjs.org/hexo-include-markdown/-/hexo-include-markdown-1.0.2.tgz"
-  "version" "1.0.2"
 
 "hexo-log@^4.0.1":
   "integrity" "sha512-i2Sgxk8Cgx5viSjq5qW5N/rBFfwoCKQcH8qnnW1fawCapcdEAhIsq+Y3vbrs9bssyDlyU6Vqm4oQmosREaNI7Q=="

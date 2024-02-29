@@ -1,6 +1,8 @@
 ---
-title: about
+title: Über
 layout: about
+language: de
+intro: Ich habe zu viele Hobbies.
 banner_img: /img/Banner4.webp
 ---
 <!-- md custom_banner.md -->

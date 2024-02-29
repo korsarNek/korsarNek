@@ -4,7 +4,7 @@
 
 # Site
 title: Korsar's Blog
-subtitle: 'Hallo Welt!'
+subtitle: ''
 description: ''
 keywords:
 author: Korsar
@@ -16,9 +16,9 @@ timezone: 'Europe/Berlin'
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
 url: http://korsar.codes
-permalink: :lang/:year/:month/:day/:title/
+permalink: :language/:title/
 permalink_defaults:
-  lang: de
+  language: de
 pretty_urls:
   trailing_index: false # Set to false to remove trailing 'index.html' from permalinks
   trailing_html: false # Set to false to remove trailing '.html' from permalinks
@@ -26,8 +26,6 @@ pretty_urls:
 # Directory
 source_dir: source
 public_dir: public
-tag_dir: tags
-archive_dir: archives
 category_dir: categories
 code_dir: downloads/code
 i18n_dir: :lang
@@ -105,3 +103,7 @@ theme: fluid
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: ''
+
+tags:
+  Electronics: Elektronik
+  Programming: Programmierung
