@@ -44,6 +44,17 @@ page.custom_css = theme.index.custom_css
             </time>
           </div>
         <% } %>
+        <% if (theme.index.post_meta.word_count) { %>
+          <span class="post-meta mr-2">
+            <i class="iconfont icon-chart"></i>
+            <% if (theme.post.meta.wordcount.format) { %>
+              <!-- compatible with older versions-->
+              <%- theme.post.meta.wordcount.format.replace('{}', wordcount(post)) %>
+            <% } else { %>
+              <%- __('post.meta.wordcount', wordcount(post)) %>
+            <% } %>
+          </span>
+        <% } %>
         <% if (theme.index.post_meta.category && post.categories.length > 0) { %>
           <div class="post-meta mr-3 d-flex align-items-center">
             <i class="iconfont icon-category"></i>
