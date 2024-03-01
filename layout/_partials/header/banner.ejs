@@ -11,29 +11,27 @@ var subtitle = page.subtitle || page.title
   <% if (banner_mask_img) { %>
     <div class="banner-mask" style="background: url('<%- url_for(banner_mask_img) %>') no-repeat center center; background-size: cover;"></div>
   <% } %>
-  <div class="full-bg-img">
-    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, <%= parseFloat(banner_mask_alpha) %>)">
-      <div class="banner-text text-center fade-in-up">
-        <div class="h2">
-          <% if(theme.fun_features.typing.enable && in_scope(theme.fun_features.typing.scope)) { %>
-            <span id="subtitle" data-typed-text="<%= subtitle %>"></span>
-            <% if (is_post()) { %>
-              <%- inject_point('postMetaTop') %>
-            <% } %>
-          <% } else { %>
-            <span id="subtitle"><%- subtitle %></span>
-            <% if (is_post()) { %>
-              <%- inject_point('postMetaTop') %>
-            <% } %>
+  <div class="mask flex-center" style="background-color: rgba(0, 0, 0, <%= parseFloat(banner_mask_alpha) %>)">
+    <div class="banner-text text-center fade-in-up">
+      <div class="h2">
+        <% if(theme.fun_features.typing.enable && in_scope(theme.fun_features.typing.scope)) { %>
+          <span id="subtitle" data-typed-text="<%= subtitle %>"></span>
+          <% if (is_post()) { %>
+            <%- inject_point('postMetaTop') %>
           <% } %>
-        </div>
+        <% } else { %>
+          <span id="subtitle"><%- subtitle %></span>
+          <% if (is_post()) { %>
+            <%- inject_point('postMetaTop') %>
+          <% } %>
+        <% } %>
       </div>
-
-      <% if (theme.scroll_down_arrow.enable && theme.scroll_down_arrow.banner_height_limit <= banner_img_height && page.layout !== '404') { %>
-        <div class="scroll-down-bar">
-          <i class="iconfont icon-arrowdown"></i>
-        </div>
-      <% } %>
     </div>
+
+    <% if (theme.scroll_down_arrow.enable && theme.scroll_down_arrow.banner_height_limit <= banner_img_height && page.layout !== '404') { %>
+      <div class="scroll-down-bar">
+        <i class="iconfont icon-arrowdown"></i>
+      </div>
+    <% } %>
   </div>
 </div>

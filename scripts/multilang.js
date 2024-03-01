@@ -245,6 +245,8 @@ function tagGenerator(locals) {
     const tagPages = hexo.locals.get('pages').data.filter(p => p.layout === 'tags');
 
     return tagPages.reduce((generatedPages, p) => {
+        const { source, __page, _id, date, full_source, layout, path, permalink, raw, title ,...pageProperties } = p;
+
         const pages = tags.reduce((result, tag) => {
             if (!tag.length) return result;
 
@@ -256,6 +258,7 @@ function tagGenerator(locals) {
                 layout: ['tag', 'archive', 'index'],
                 format: paginationDir + '/%d/',
                 data: {
+                    ...pageProperties,
                     tag: tag.name,
                     language: p.language,
                 }
@@ -277,6 +280,7 @@ function tagGenerator(locals) {
                 posts: locals.posts,
                 language: p.language,
                 data: {
+                    ...pageProperties,
                     base: tagDir,
                     total: 1,
                     current: 1,
