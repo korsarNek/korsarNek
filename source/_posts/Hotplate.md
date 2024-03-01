@@ -219,8 +219,8 @@ I had imagined the difference between the percentage numbers of area and X-point
 ```mermaid
 xychart-beta
 title "Bisection Circle Segment"
-x-axis "Area Percent" [0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5]
-y-axis "X-Axis Percent" 0 --> 0.5
+x-axis "X-Axis Percent" [0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5]
+y-axis Area Percent"" 0 --> 0.5
 line [0, 0.097308171540498765, 0.15647558420896526, 0.20743129178881647, 0.25406906604766843, 0.2980136349797249, 0.34015423953533175, 0.3810587957501413, 0.42113191485404966, 0.46068957000970834, 0.4999999850988388]
 ```
 
@@ -229,8 +229,8 @@ The formulas and the recommendation from ChatGPT also sounded quite reasonable t
 ```mermaid
 xychart-beta
 title "Integral Sine Wave"
-x-axis "Area Percent" [0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5]
-y-axis "X-Axis Percent" 0 --> 0.5
+x-axis "X-Axis Percent" [0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5]
+y-axis "Area Percent" 0 --> 0.5
 line [0, 0.00615582970243, 0.0244717418524, 0.0544967379058, 0.0954915028125, 0.146446609407, 0.206107373854, 0.27300475013, 0.345491502812, 0.42178276748, 0.5]
 ```
 

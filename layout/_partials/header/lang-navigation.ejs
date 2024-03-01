@@ -70,7 +70,7 @@
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <% for(const lang of theme.languages || []) { %>
-                <a class="dropdown-item" href="<%= url_for(page.path, {lang: lang, id: page.id, layout: page.layout}) %>">
+                <a class="dropdown-item" href="<%= url_for(page.path, {lang: lang, id: page.id, layout: page.layout}) %>" aria-label="Language <%= lang %>">
                   <i class="flag fi-<%= lang %>"></i>
                 </a>
               <% } %>
