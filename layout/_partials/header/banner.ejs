@@ -16,14 +16,8 @@ var subtitle = page.subtitle || page.title
       <div class="h2">
         <% if(theme.fun_features.typing.enable && in_scope(theme.fun_features.typing.scope)) { %>
           <span id="subtitle" data-typed-text="<%= subtitle %>"></span>
-          <% if (is_post()) { %>
-            <%- inject_point('postMetaTop') %>
-          <% } %>
         <% } else { %>
           <span id="subtitle"><%- subtitle %></span>
-          <% if (is_post()) { %>
-            <%- inject_point('postMetaTop') %>
-          <% } %>
         <% } %>
       </div>
     </div>

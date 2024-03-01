@@ -53,3 +53,11 @@
 .navbar .dropdown-menu {
     min-width: 1rem;
 }
+
+.post-meta-container {
+    display: flex;
+    justify-content: space-between;
+    padding-left: 10%;
+    padding-right: 10%;
+    margin-bottom: 2rem;
+}
