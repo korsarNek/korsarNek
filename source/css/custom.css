@@ -50,6 +50,10 @@
     background: var(--highlight-bg-color);
 }
 
+.navbar {
+    text-shadow: black 0 0 1.5px;
+}
+
 .navbar .dropdown-menu {
     min-width: 1rem;
 }
@@ -60,4 +64,11 @@
     padding-left: 10%;
     padding-right: 10%;
     margin-bottom: 2rem;
+}
+
+@media (max-width: 767px) {
+    .post-meta-container {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
 }
