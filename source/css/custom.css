@@ -17,8 +17,10 @@
     text-shadow: white 0 0 1.5px;
 }
 
-.footer-inner {
-    padding: 0; /* We have no footer content */
+@media (max-width: 479px) {
+    .footer-inner {
+        padding: 0; /* We have no footer content */
+    }
 }
 
 /* Mardown blocks */
