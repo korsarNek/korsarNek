@@ -58,6 +58,14 @@
     min-width: 1rem;
 }
 
+.navbar-toggler .animated-icon span {
+    box-shadow: black 0 0 1.5px;
+}
+
+.navbar-toggler .animated-icon.open span {
+    box-shadow: none;
+}
+
 .post-meta-container {
     display: flex;
     justify-content: space-between;
