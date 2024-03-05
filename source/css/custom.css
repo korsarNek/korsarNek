@@ -80,3 +80,10 @@
         padding-right: 2rem;
     }
 }
+
+@media (max-width: 424px) {
+    .post-meta-container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
