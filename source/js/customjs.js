@@ -49,6 +49,49 @@ Fluid.plugins.fancyBox = function (selector) {
             showOnStart: false,
         },
         on: {
+            init: (fancybox) => {
+                const getHash = () => {
+                    const slide = fancybox.getSlide();
+                    let hash = "";
+                    if (fancybox.carousel && slide) {
+                        const slug = slide.slug;
+                        const triggerElement = slide.triggerEl;
+                        let optionSlug = slug || (fancybox.option("slug") || "");
+                        if (!optionSlug && triggerElement && triggerElement.dataset) {
+                            optionSlug = triggerElement.dataset.fancybox || "";
+                        }
+                        if (optionSlug && optionSlug !== "true") {
+                            if (slug) {
+                                hash = "#" + slug;
+                            } else {
+                                hash = "#" + optionSlug + (fancybox.carousel.slides.length > 1 ? "-" + (slide.index + 1) : "");
+                            }
+                        }
+                    }
+                    return hash;
+                }
+
+                let timeout = 0;
+                const oldChange = fancybox.plugins.Hash.onChange;
+                // Hash plugin is buggy, it does a pushState only on first open, afterwards it only does replaceState, which means we can press back only a single time,
+                // if we try again later, we return to the previous page, even if the carousel is currently open.
+                fancybox.plugins.Hash.onChange = (instance) => {
+                    if (timeout) {
+                        clearTimeout(timeout);
+                    }
+
+                    const hash = getHash();
+                    timeout = setTimeout(() => {
+                        window.history.pushState({}, document.title, window.location.pathname + window.location.search + hash);
+                    }, 300);
+                };
+                const readyEventList = fancybox.events.get('Carousel.ready');
+                const oldChangeIndex = readyEventList.indexOf(oldChange);
+                if (oldChangeIndex !== -1) {
+                    readyEventList[oldChangeIndex] = fancybox.plugins.Hash.onChange;
+                    fancybox.events.set('Carousel.ready', readyEventList);
+                }
+            },
             "Carousel.beforeInitSlide": (_, __, carouselElement) => {
                 // Remove lazyload if it should be shown in the carousel.
                 const imgElement = carouselElement.thumbEl;
