@@ -14,7 +14,7 @@
 
 .banner-text {
     color: var(--dark-banner-text);
-    text-shadow: white 0 0 1.5px;
+    text-shadow: rgba(255, 255, 255, 0.5) 0 0 1.5px;
 }
 
 @media (max-width: 479px) {
@@ -51,7 +51,7 @@
 }
 
 .navbar {
-    text-shadow: black 0 0 1.5px;
+    text-shadow: rgba(0, 0, 0, 0.5) 0 0 1.5px;
 }
 
 .navbar .dropdown-menu {
@@ -59,7 +59,7 @@
 }
 
 .navbar-toggler .animated-icon span {
-    box-shadow: black 0 0 1.5px;
+    box-shadow: rgba(0, 0, 0, 0.5) 0 0 1.5px;
 }
 
 .navbar-toggler .animated-icon.open span {
