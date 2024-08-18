@@ -395,12 +395,13 @@ let translations = undefined;
 
 function generateJsConfig() {
     if (translations === undefined && fs.existsSync('_i18n.yml')) {
-        const i18nKeys = yaml.load(fs.readFileSync('_i18n.yml'))?.i18n?.keys;
-        translations = Object.entries(i18nKeys).reduce((acc, [key, data]) => {
-            acc[key] = data[this.page.language];
-            return acc;
-        }, {});
+        translations = Object.entries(yaml.load(fs.readFileSync('_i18n.yml'))?.i18n?.keys);
     }
+
+    const perPageTranslation = translations.reduce((acc, [key, data]) => {
+        acc[key] = data[this.page.language];
+        return acc;
+    }, {});
 
     let { config, theme, fluid_version, page } = this;
     const exportConfig = {
@@ -419,7 +420,7 @@ function generateJsConfig() {
         web_analytics: theme.web_analytics,
         search_path: url_for(theme.search.path, { lang: page.language }),
         include_content_in_search: theme.search.content,
-        translations,
+        translations: perPageTranslation,
     };
     return `<script id="fluid-configs">
         var Fluid = window.Fluid || {};

@@ -108,6 +108,7 @@ server:
   compress: true
 
 feed:
+  icon: img/favicon.webp
   types:
     atom:
       input: layout/feed/atom.xml
