@@ -6,4 +6,5 @@ node_modules/
 public/
 .deploy*/
 _multiconfig.yml
-.yarn
+.yarn/*
+!.yarn/releases
