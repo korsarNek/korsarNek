@@ -146,7 +146,10 @@ class LoadingCircle extends HTMLElement {
     }
 
     get total(): number {
-        return parseFloat(this.getAttribute('total') ?? '');
+        const total = parseFloat(this.getAttribute('total') ?? '');
+        if (isNaN(total))
+            return 0;
+        return total;
     }
 
     set total(value: number) {
@@ -154,7 +157,10 @@ class LoadingCircle extends HTMLElement {
     }
 
     get progress(): number {
-        return parseFloat(this.getAttribute('progress') ?? '');
+        const progress = parseFloat(this.getAttribute('progress') ?? '');
+        if (isNaN(progress))
+            return 0;
+        return progress;
     }
 
     set progress(value: number) {

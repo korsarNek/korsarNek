@@ -166,6 +166,7 @@ function initializeThreeJs(element: HTMLElement) {
 		controls.addTargetException(icon);
 	}, (progress) => {
 		// The numbers returned for the progress are useless, sometimes total is larger than loaded, sometimes the other way around and always is the total wrong.
+		loadingCircle.setAttribute('progress', '' + progress.loaded);
 	}, (error) => {
 		console.error( error );
 	});
