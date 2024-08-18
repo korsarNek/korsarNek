@@ -14,9 +14,9 @@ hexo.model('Tag').schema.virtual('path', function () {
     let basePath = makeDirectoryPath(hexo.config.tag_dir);
     const tagMap = hexo.config.tags || {};
     if (tagMap[name] !== undefined)
-        basePath = makeAbsoluteDirectoryPath(tagPages.find(p => p.language === 'en').path);
+        basePath = '/tags/'; // Tag pages don't have a path yet when building for the first time
     else if (Object.values(tagMap).find(value => value === name))
-        basePath = makeAbsoluteDirectoryPath(tagPages.find(p => p.language === 'de').path);
+        basePath = '/schlagwoerter/';
 
     return makeDirectoryPath(basePath + this.slug);
 });
