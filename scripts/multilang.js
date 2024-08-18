@@ -2,6 +2,7 @@ const pagination = require('hexo-pagination');
 const createWarehouseWrapper = require('./warehouse');
 const url = require('url');
 const fs = require('fs');
+const p = require('path');
 const yaml = require('js-yaml');
 
 const fmtNum = num => num.toString().padStart(2, '0');
@@ -10,14 +11,14 @@ hexo.model('Tag').schema.virtual('path', function () {
 
     const tagPages = hexo.locals.get('pages').data.filter(p => p.layout === 'tags');
 
-    let basePath = makeDirectory(hexo.config.tag_dir);
+    let basePath = makeDirectoryPath(hexo.config.tag_dir);
     const tagMap = hexo.config.tags || {};
     if (tagMap[name] !== undefined)
-        basePath = makeDirectory(tagPages.find(p => p.language === 'en').path);
-    else if (Object.getOwnPropertyNames(tagMap).find(key => tagMap[key] === name))
-        basePath = makeDirectory(tagPages.find(p => p.language === 'de').path);
+        basePath = makeAbsoluteDirectoryPath(tagPages.find(p => p.language === 'en').path);
+    else if (Object.values(tagMap).find(value => value === name))
+        basePath = makeAbsoluteDirectoryPath(tagPages.find(p => p.language === 'de').path);
 
-    return basePath + this.slug;
+    return makeDirectoryPath(basePath + this.slug);
 });
 function getLanguages() {
     let languages = [...hexo.config.language];
@@ -28,9 +29,15 @@ function getLanguages() {
     return languages;
 }
 
-function makeDirectory(url) {
+function makeDirectoryPath(url) {
     url = url.replace(/index.html$/, '').replace(/\.html$/, '');
     if (!url.endsWith('/')) url += '/';
+    return url;
+}
+
+function makeAbsoluteDirectoryPath(url) {
+    url = makeDirectoryPath(url);
+    if (!url.startsWith('/')) url = '/' + url;
     return url;
 }
 
@@ -170,7 +177,7 @@ function archiveGenerator(locals) {
     archivePages.forEach(page => {
         const languagePosts = filterByLanguage(allPosts, page.language);
 
-        generate(makeDirectory(page.path), languagePosts, { ...page, language: page.language });
+        generate(makeDirectoryPath(page.path), languagePosts, { ...page, language: page.language });
     });
 
     if (!config.archive_generator.yearly) return result;
@@ -227,7 +234,7 @@ function archiveGenerator(locals) {
         for (let i = 0, len = years.length; i < len; i++) {
             year = +years[i];
             data = posts[year];
-            url = makeDirectory(page.path) + year + '/';
+            url = makeDirectoryPath(page.path) + year + '/';
             if (!data[0].length) continue;
 
             generate(url, new Query(data[0]), { year });
@@ -283,7 +290,7 @@ function tagGenerator(locals) {
             const posts = filterByLanguage(tag.posts.sort(orderBy), p.language);
             if (!posts.length) return result;
 
-            const data = pagination(makeDirectory(p.path) + tag.slug, posts, {
+            const data = pagination(makeDirectoryPath(p.path) + tag.slug, posts, {
                 perPage: perPage,
                 layout: ['tag', 'archive', 'index'],
                 format: paginationDir + '/%d/',
@@ -452,6 +459,23 @@ function url_for(path = '', options = {}) {
     let condition = (p) => false;
     if (lang) {
         if (options.layout) {
+            if (options.layout === 'tag') {
+                const checkPath = makeAbsoluteDirectoryPath(path);
+                if (lang !== defaultLang) {
+                    const tag = hexo.locals.get('tags').data.find(t => t.path === checkPath);
+
+                    const tagMap = hexo.config.tags || {};
+                    if (tagMap[tag.name] !== undefined)
+                        return hexo.locals.get('tags').data.find(t => t.name === tagMap[tag.name]).path;
+                    else {
+                        const key = Object.keys(tagMap).find(key => tagMap[key] === tag.name);
+                        if (key !== undefined) {
+                            return hexo.locals.get('tags').data.find(t => t.name === key).path;
+                        }
+                    }
+                } else
+                    return checkPath;
+            }
             if (options.id) {
                 condition = (p) => p.id === options.id && (p.language == lang || (!p.language && lang === defaultLang)) && p.layout == options.layout;
             } else {
@@ -470,9 +494,10 @@ function url_for(path = '', options = {}) {
         if (post)
             path = post.path;
         else {
-            const tag = hexo.locals.get('tags').data.find(t => t.path === path);
+            const checkPath = makeAbsoluteDirectoryPath(path);
+            const tag = hexo.locals.get('tags').data.find(t => t.path === checkPath);
             if (tag !== undefined)
-                return path;
+                return checkPath;
         }
     }
 
