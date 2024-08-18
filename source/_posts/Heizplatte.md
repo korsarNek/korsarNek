@@ -6,6 +6,7 @@ id: Hotplate
 language: de
 mermaid: true
 banner_img: /img/Banner2.webp
+image: post_assets/Hotplate/Hotplate_printed.webp
 tags:
     - Elektronik
     - Programmierung
