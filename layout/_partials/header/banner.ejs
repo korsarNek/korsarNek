@@ -12,7 +12,7 @@ var subtitle = page.subtitle || page.title
     <div class="banner-mask" style="background: url('<%- url_for(banner_mask_img) %>') no-repeat center center; background-size: cover;"></div>
   <% } %>
   <div class="mask flex-center" style="background-color: rgba(0, 0, 0, <%= parseFloat(banner_mask_alpha) %>)">
-    <div class="banner-text text-center fade-in-up">
+    <div class="banner-text text-center fade-in-up <%= page.title_class %>">
       <div class="h2">
         <% if(theme.fun_features.typing.enable && in_scope(theme.fun_features.typing.scope)) { %>
           <span id="subtitle" data-typed-text="<%= subtitle %>"></span>

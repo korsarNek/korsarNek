@@ -33,8 +33,8 @@ My PCB should have an [RP2040](https://www.raspberrypi.com/documentation/microco
 I created the PCB with KiCad and had 5 of them produced in China by JLCPCB. I have a small soldering station with a soldering iron and a hot air gun. The RP2040 is a QFN (Quad Flat No-lead).
 
 {% gi 2 2 %}
-  ![RP2040 front](/img/RP2040_front.webp)
-  ![RP2040 back](/img/RP2040_back.webp)
+  ![RP2040 front](/post_assets/Hotplate/RP2040_front.webp)
+  ![RP2040 back](/post_assets/Hotplate/RP2040_back.webp)
 {% endgi %}
 
 This means the contacts only exist under the chip, and each contact is only 0.2mm in size, making it extremely difficult to solder. It might not be impossible, and some manage to do it, but not me; I've tried... I had the most success with the hot air gun, but I had to heat the chip for a long time and at high temperatures, to the point where the labeling on the chip had vanished. Unfortunately, the chip did not boot, and I assume it was damaged in the process. These packages are actually intended for a different soldering process, one where the entire PCB is heated, and the solder under the chip becomes liquid.
@@ -52,23 +52,23 @@ I would like to be able to switch the heating plate on or off via a microcontrol
 I also have various transistors lying around, none for mains voltage, but I found the BT136 online, it is suitable and inexpensive. What I still needed was an optocoupler that could handle mains voltage. The PC817 has a transistor that can withstand up to 35V, but mains voltage is 230V [RMS](https://en.wikipedia.org/wiki/Root_mean_square), which is a maximum of ~310V. (The peak voltage of an RMS voltage is $√2*V$). The optocoupler must also withstand the same voltage in the opposite direction. Normal transistors work better in one direction than the other. The BT136 is a special type of transistor called a triac, designed for alternating voltages, which is what I need for an optocoupler, and I found it in the MOC3021M.
 
 {% gi 3 3 %}
-  ![BT136](/img/BT136.webp)
-  ![PC817](/img/PC817.webp)
-  ![MOC3021M](/img/MOC3021M.webp)
+  ![BT136](/post_assets/Hotplate/BT136.webp)
+  ![PC817](/post_assets/Hotplate/PC817.webp)
+  ![MOC3021M](/post_assets/Hotplate/MOC3021M.webp)
 {% endgi %}
 
 ### Design
 
 I wanted a heating element on top of a box, with 4 buttons for control, a display, and a USB port for data readout. What I found while soldering the RP2040 is that many more complex electronic components need to be heated to a certain temperature for a certain duration to ensure that the component is not destroyed during the soldering process. I wanted to store these heating models on a USB stick to easily use new models. In addition, I needed a connection for mains voltage. Inside the box, I would then reduce the mains voltage via an internal power supply to a level that the RP2040 can work with.
 
-![RP2040 Heating Model](/img/RP2040_curve.webp)
+![RP2040 Heating Model](/post_assets/Hotplate/RP2040_curve.webp)
 
 I then started transferring the components I already had into Blender to create a 3D model. I also made the PCB in KiCad and imported the 3D model of it into Blender.
 
 {% gi 3 1-2 %}
-  ![3D Model](/img/Hotplate_3dmodel.webp)
-  ![KiCad Front](/img/Hotplate_kicad_v1_front.webp)
-  ![KiCad Back](/img/Hotplate_kicad_v1_back.webp)
+  ![3D Model](/post_assets/Hotplate/Hotplate_3dmodel.webp)
+  ![KiCad Front](/post_assets/Hotplate/Hotplate_kicad_v1_front.webp)
+  ![KiCad Back](/post_assets/Hotplate/Hotplate_kicad_v1_back.webp)
 {% endgi %}
 
 
@@ -78,19 +78,19 @@ I then started transferring the components I already had into Blender to create 
 
 Initially, I chose the Arduino Pro Micro, although I had Arduinos lying around, I had never actually done anything with an Arduino.
 
-![Arduino Pro Micro](/img/Arduino_pro_micro.webp)
+![Arduino Pro Micro](/post_assets/Hotplate/Arduino_pro_micro.webp)
 
 I wrote a small program with the Arduino IDE that could display a UI on the display, process the 4 input buttons, and read the temperature via a thermistor.
 
 Thermistors are electrical resistors that have a precisely defined behavior at different temperatures, with the resistance in a circuit increasing at higher temperatures, and they are produced so that they have a very accurate behavior. The temperature is then measured by reading the voltage on the line. Thermistors are used as part of a voltage divider. For example, on one side, you have a 4.7k ohm resistor, and on the other, the thermistor, and you read the voltage in between. For example, there are 5V before the 4.7k resistor, and 0V after the thermistor. If the thermistor shows 14.1k at a temperature, the voltage between the resistors is 3/4 of 5V, i.e., 3.75V $(V*R1/(R1+R2))$. (There are Thermistors which are conductors i.e. semiconductors, whose resistance decreases with temperature, other than that the principle is the same)
 
-![Voltage Divider](/img/voltage_divider.webp)
+![Voltage Divider](/post_assets/Hotplate/voltage_divider.webp)
 
 Unfortunately, the Arduino Micro Pro cannot function as a USB host, so it cannot read USB sticks. For that, I would have needed a different microcontroller. I wanted to work more with the RP2040 anyway so I decided on a Waveshare RP2040-zero, a very small board with a much more powerful processor and a whole 200kB of RAM instead of just 2kB compared to my Arduino. In terms of size, the RP2040 is also similar enough to the Arduino Pro Micro that I can use the same mount for it and don't have to print a new case.
 
-![Waveshare RP2040-zero](/img/Waveshare_RP2040_front.webp)
+![Waveshare RP2040-zero](/post_assets/Hotplate/Waveshare_RP2040_front.webp)
 
-![Heating Plate](/img/Hotplate_printed.webp)
+![Heating Plate](/post_assets/Hotplate/Hotplate_printed.webp)
 
 The 2kB of RAM was already quite tight due to the graphical interface, and I had trouble getting all the texts and images into memory. The RP2040 also comes with a full 120MHz and multiple cores, instead of just 16MHz and one core, a welcome upgrade.
 
@@ -168,18 +168,18 @@ So I started trying to create my own algorithm with some experimentation. My sim
 During PID tuning, the heating element is first operated in a [Bang-Bang mode](https://control.com/textbook/closed-loop-control/onoff-control/), during which some data is collected and from this data, an algorithm calculates the PID factors.
 
 {% gi 2 2 %}
-  ![](/img/bangbang1.webp)
-  ![](/img/bangbang2.webp)
+  ![](/post_assets/Hotplate/bangbang1.webp)
+  ![](/post_assets/Hotplate/bangbang2.webp)
 {% endgi %}
 
 I started by designing the algorithm as I understand PID and heating curves. Logically approaching what, in my understanding, would contribute to producing a good clean curve. Of course, this did not get me very far. So I went on to combine numbers with each other that would bring me close to the values I expected. I had several scenarios that did not work in a certain way and with the graphs from crystalinstruments, I could estimate which factor would roughly have to be adjusted in which direction to solve that. Then, I looked at which values are specific to the scenarios that are not working and tried to involve them in the calculation until I got a good result. In the end, I no longer understood what I was doing, but the result was good. It fulfilled all my test scenarios, a few scenarios could have had slightly more optimal values, but with this method, I only solve it approximately anyway. It is not a quite correct method and getting the last bit out is time-consuming. So the classic 80/20 rule, with 20% of the effort, I get about 80% to the solution, the remaining 20% would take 80% of the time and it is currently good enough.
 
 {% gi 5 2-3 %}
-  ![](/img/Test1.webp)
-  ![](/img/Test2.webp)
-  ![](/img/Test3.webp)
-  ![](/img/Test6.webp)
-  ![](/img/Test_HotPlate.webp)
+  ![](/post_assets/Hotplate/Test1.webp)
+  ![](/post_assets/Hotplate/Test2.webp)
+  ![](/post_assets/Hotplate/Test3.webp)
+  ![](/post_assets/Hotplate/Test6.webp)
+  ![](/post_assets/Hotplate/Test_HotPlate.webp)
 {% endgi %}
 
 ### Sine Wave to Power
@@ -194,7 +194,7 @@ With the RP2040, I then determined the wait time to turn on the triac at, for ex
 
 At 0%, 50%, and 100%, the point at which the triac must be turned on is equal to the area, in all other cases, there is a certain deviation. 
 
-![Sine Curve](/img/Sinus_graph.webp)
+![Sine Curve](/post_assets/Hotplate/Sinus_graph.webp)
 [Interactive Link](https://www.desmos.com/calculator/t0subox9jh)
 
 After some research, I found formulas where you can calculate the area of a segment of a circle that has been cut off at a certain point. The problem is, I'm looking for the opposite, a formula to find the point where the sine curve can be cut off based on the area. I had learned to rearrange formulas in school, but I had never rearranged such a complicated formula and instead of trying it myself first, I turned to ChatGPT.
@@ -245,11 +245,11 @@ Why? I asked myself that more often over the next few weeks.
 
 I replaced the microcontroller, switched from Arduino IDE to Platform.IO, and used a different framework to control the RP2040. Somewhere along there should be the error, I looked at the source code of the new framework a bit, but couldn't figure it out and decided to try to set up a debugger. One method to do this with an RP2040 is to use a Debug-Probe.
 
-![Debug Probe](/img/Debug_probe.webp)
+![Debug Probe](/post_assets/Hotplate/Debug_probe.webp)
 
 After I compiled and transferred the firmware for it, I had to connect the Debug-Probe to the SWDIO and SWDCLK pins. Unfortunately, these pins on the Waveshare RP2040-zero are tiny, about 1mm x 1mm. Soldering cables to them proved too difficult for me, as I ripped off a pad in the process.
 
-![Waveshare RP2040-zero](/img/Waveshare_RP2040_back.webp)
+![Waveshare RP2040-zero](/post_assets/Hotplate/Waveshare_RP2040_back.webp)
 
 Next was to buy a new microcontroller. The RaspberryPi Zeros are cheaper than the Waveshare variant, but much larger than the Waveshare or the Arduino Pro Micro. The new chip would not fit neatly into the case, but that was now irrelevant, I wanted to move forward.
 
@@ -267,7 +267,7 @@ There is still the problem, why was there a timeout in the transmission of the d
 
 So everything worked software-wise, for some reason, the packets did not arrive, to find out why, I tried to debug the hardware next. My biggest friend in this was to connect an [oscilloscope](https://en.wikipedia.org/wiki/Oscilloscope) to the data line and see what was going on there.
 
-![Oscilloscope](/img/Oszilloskop.webp)
+![Oscilloscope](/post_assets/Hotplate/Oszilloskop.webp)
 
 Fortunately, my oscilloscope can understand a few different hardware protocols, including I²C. With that, it turned out that most packets are complete, in fact, all packets are sent correctly. A detail of the I²C protocol is that each packet must be acknowledged by the receiver by pulling the data line down to 0 volts. The display tries to do that, but after a few packets, it only manages to do so with 1-2 volts, which is then interpreted by the microcontroller as not received, which then messes up the sending process.
 
@@ -300,7 +300,7 @@ Something I will also change for future projects is to be much more generous wit
 Something I need to learn for the future is not to go too deep at the beginning to prevent working on parts that then turn out to be unnecessary, like the power of the sine wave.
 
 {% gi 3 1-2 %}
-  ![3D Model](/img/Hotplate_3dmodel_nicer.webp)
-  ![KiCad V2 Front](/img/Hotplate_kicad_v2_front.webp)
-  ![KiCad V2 Back](/img/Hotplate_kicad_v2_back.webp)
+  ![3D Model](/post_assets/Hotplate/Hotplate_3dmodel_nicer.webp)
+  ![KiCad V2 Front](/post_assets/Hotplate/Hotplate_kicad_v2_front.webp)
+  ![KiCad V2 Back](/post_assets/Hotplate/Hotplate_kicad_v2_back.webp)
 {% endgi %}

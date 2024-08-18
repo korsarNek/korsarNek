@@ -3,6 +3,10 @@ class WarehouseWrapper extends Array {
         this.forEach(callback);
     }
 
+    first() {
+        return this[0];
+    }
+
     toArray() {
         return this;
     }

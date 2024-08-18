@@ -52,7 +52,7 @@ highlight:
   wrap: true
   hljs: false
 prismjs:
-  preprocess: true
+  preprocess: false
   line_number: true
   tab_replace: ''
 
@@ -104,6 +104,20 @@ theme: fluid
 deploy:
   type: ''
 
+server:
+  compress: true
+
+feed:
+  types:
+    atom:
+      input: layout/feed/atom.xml
+      output: xml/atom.xml
+    rss:
+      input: layout/feed/rss.xml
+      output: xml/rss.xml
+
 tags:
   Electronics: Elektronik
   Programming: Programmierung
+  3D Modeling: 3D Modellierung
+  Game Development: Spieleentwicklung

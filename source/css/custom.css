@@ -1,11 +1,15 @@
 :root {
     --dark-banner-text: black;
-    --graph-color: #0077aa;
+    --graph-color: #0077aa;   
 }
 
 [data-user-color-scheme="dark"] {
     --graph-color: #30a9de;
     --highlight-bg-color: #202730;
+}
+
+body {
+    transition: color 0.4s ease-in-out, background-color 0.4s ease-in-out;
 }
 
 #subtitle, .typed-cursor {
@@ -15,6 +19,11 @@
 .banner-text {
     color: var(--dark-banner-text);
     text-shadow: rgba(255, 255, 255, 0.5) 0 0 1.5px;
+}
+
+.banner-text-bright {
+    color: white;
+    text-shadow: rgba(0, 0, 0, 1) 0 0 3px;
 }
 
 @media (max-width: 479px) {
@@ -86,4 +95,38 @@
         padding-left: 1rem;
         padding-right: 1rem;
     }
+}
+
+.group-image--align .group-image-wrap {
+    flex-basis: auto;
+}
+
+threejs {
+    display: block;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    position: relative;
+    cursor: move;
+    
+    > .orbit {
+        position: absolute;
+        width: 50px;
+        bottom: 5px;
+        right: 5px;
+        background-color: rgba(255, 255, 255, 0.2);
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    > canvas {
+        width: 100%;
+    }
+}
+
+my-youtube {
+    display: block;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
 }

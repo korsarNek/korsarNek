@@ -1,0 +1,8 @@
+i18n:
+  keys:
+    touch-hint:
+      de: Verwenden Sie 2 Finger zum Umschauen.
+      en: Use 2 fingers to look around.
+    show-youtube:
+      de: Youtube-Videos laden?
+      en: Load Youtube videos?

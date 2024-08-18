@@ -33,8 +33,8 @@ Meine Platine sollte einen [RP2040](https://www.raspberrypi.com/documentation/mi
 Ich hatte die Platine über KiCad erstellt und über JLCPCB 5 davon in China produzieren lassen. Bei mir habe ich eine kleine Lötstation mit Lötkolben und Heißluftpistole. Der RP2040 ist ein QFN (Quad Flat No-lead).
 
 {% gi 2 2 %}
-  ![RP2040 vorne](/img/RP2040_front.webp)
-  ![RP2040 hinten](/img/RP2040_back.webp)
+  ![RP2040 vorne](/post_assets/Hotplate/RP2040_front.webp)
+  ![RP2040 hinten](/post_assets/Hotplate/RP2040_back.webp)
 {% endgi %}
 
 Das heißt es existieren Kontakte nur unter dem Chip, zu dem ist jeder Kontakt nur 0,2mm groß, was es extrem Schwer macht zu löten. Es mag nicht unmöglich sein und manche schaffen das, ich aber nicht, ich habe es versucht... Ich hatte mit der Heißluftpistole den meisten Erfolg, habe dafür den Chip aber recht lange und stark erhitzt, die Beschriftung auf dem Chip war schon verschwunden. Leider hatte der Chip nicht gebootet, ich nehme an er ist dabei kaputt gegangen. Diese Packages sind eigentlich für einen anderen Lötprozess vorgesehen, einen wo man die ganze Platine erhitzt und dadurch das Lötzinn unter dem Chip flüssig wird.
@@ -52,23 +52,23 @@ Ich würde die Heizplatte gerne über einen Mikrocontroller an oder ausschalten 
 Ich habe auch diverse Transistoren rumliegen, keinen für Netzspannung, aber der BT136 ist dafür geeignet und günstig. Was mir noch fehlte ist ein Optokoppler der mit Netzspannung zurecht kommt. Der PC817 hat einen Transistor der bis zu 35V aushält, Netzspannung beträgt 230V [RMS](https://en.wikipedia.org/wiki/Root_mean_square), das sind maximal ~310V. (Spannungspitze einer RMS-Spannung ist $√2*V$). Das selbe muss der Optokoppler auch in die entgegengesetzte Richtung aushalten, normale Transistoren funktionieren in eine Richtung besser als die andere. Der BT136 ist eine spezielle Art von Transistor die sich Triac nennt, das ist ein speziell konstruierter Transistor der für Wechselspannungen geeignet ist, so etwas brauche ich für einen Optokoppler und das habe ich gefunden im MOC3021M.
 
 {% gi 3 3 %}
-  ![BT136](/img/BT136.webp)
-  ![PC817](/img/PC817.webp)
-  ![MOC3021M](/img/MOC3021M.webp)
+  ![BT136](/post_assets/Hotplate/BT136.webp)
+  ![PC817](/post_assets/Hotplate/PC817.webp)
+  ![MOC3021M](/post_assets/Hotplate/MOC3021M.webp)
 {% endgi %}
 
 ### Design
 
 Ich wollte ein Heizelement oben auf einer Box, mit 4 Knöpfen zum Steuern, einem Display und USB-Anschluss zum Auslesen von Daten. Was ich beim Löten des RP2040 gefunden habe ist, dass viele komplexere elektronische Komponenten für eine bestimmte Dauer auf einer bestimmten Temperatur geheizt werden müssen, um sicher zu stellen, dass die Komponente beim Lötvorgang nicht zerstört wird. Diese Heizmodelle wollte ich auf einen USB-Stick packen um leicht neue Modelle verwenden zu können. Zudem musste noch ein Anschluss für die Netzspannung ran. Innerhalb der Box würde ich die Netzspannung dann über ein internes Netzteil auf etwas reduzieren mit dem der RP2040 arbeiten kann.
 
-![RP2040 Heizmodell](/img/RP2040_curve.webp)
+![RP2040 Heizmodell](/post_assets/Hotplate/RP2040_curve.webp)
 
 Ich habe dann damit angefangen die Komponenten die ich bereits hatte in Blender zu übertragen und damit ein 3D Modell zu erstellen. Ich habe auch die Platine in KiCad gemacht und das 3D Modell davon in Blender importiert.
 
 {% gi 3 1-2 %}
-  ![3D Modell](/img/Hotplate_3dmodel.webp)
-  ![KiCad Vorne](/img/Hotplate_kicad_v1_front.webp)
-  ![KiCad hinten](/img/Hotplate_kicad_v1_back.webp)
+  ![3D Modell](/post_assets/Hotplate/Hotplate_3dmodel.webp)
+  ![KiCad Vorne](/post_assets/Hotplate/Hotplate_kicad_v1_front.webp)
+  ![KiCad hinten](/post_assets/Hotplate/Hotplate_kicad_v1_back.webp)
 {% endgi %}
 
 
@@ -78,19 +78,19 @@ Ich habe dann damit angefangen die Komponenten die ich bereits hatte in Blender 
 
 Ich hatte mich zuerst für den Arduino Pro Micro entschieden, ich hatte zwar Arduinos rumliegen, aber noch nie tatsächlich etwas mit einem Arduino gemacht.
 
-![Arduino Pro Micro](/img/Arduino_pro_micro.webp)
+![Arduino Pro Micro](/post_assets/Hotplate/Arduino_pro_micro.webp)
 
 Ich habe mit der Arduino IDE ein kleines Programm geschrieben, dass eine UI auf dem Display anzeigen, die 4 Eingabeknöpfe verarbeiten konnte und über einen Thermistor die Temperatur auslesen konnte.
 
 Thermistoren sind elektrische Widerstände die ein genau definiertes Verhalten bei unterschiedlichen Temperaturen haben, bei höheren Temperaturen steigt der Widerstand in einer Leitung und die sind so produziert, dass die ein sehr genaues Verhalten haben. Die Temperatur misst man dann, indem man die Spannung auf der Leitung misst. Thermistoren werden als Teil eines Spannungsteilers verwendet. Man hat auf der einen Seite zum Beispiel einen 4.7k Ohm Widerstand und auf der anderen Seite den Thermistor und dazwischen liest man die Spannung aus. Vor dem 4.7k Widerstand sind zum Beispiel 5V, hinter dem Thermistor 0V. Wenn der Thermistor 14.1k bei einer Temperatur aufweist, beträgt die Spannung zwischen den Widerständen 3/4 von 5V, also 3.75V $(V*R1/(R1+R2))$. (Es gibt auch Thermistoren, die keine Widerstände sind sondern Leiter bzw. Halbleiter, dort reduziert sich der Widerstand mit der Temperatur, ansonsten ist das Prinzip aber das selbe)
 
-![Spannungsteiler](/img/voltage_divider.webp)
+![Spannungsteiler](/post_assets/Hotplate/voltage_divider.webp)
 
 Leider kann der Arduino Micro Pro nicht als USB-Host fungieren, also keine USB-Sticks auslesen, dafür hätte ich einen anderen Mikrocontroller gebraucht. Daher ich eh mehr mit dem RP2040 arbeiten will habe ich mich für einen Waveshare RP2040-zero entschieden, eine sehr kleine Platine mit einem deutlich Leistungsstärkeren Prozessor und ganzen 200kB RAM anstelle von nur 2kB im Vergleich zu meinem Arduino. Von der Größe her ist der dem Arduino Pro Micro auch ähnlich genug, dass ich dafür die selbe Halterung verwenden kann und kein neues Gehäuse dafür drucken muss.
 
-![Waveshare RP2040-zero](/img/Waveshare_RP2040_front.webp)
+![Waveshare RP2040-zero](/post_assets/Hotplate/Waveshare_RP2040_front.webp)
 
-![Heizplatte](/img/Hotplate_printed.webp)
+![Heizplatte](/post_assets/Hotplate/Hotplate_printed.webp)
 
 Die 2kB RAM waren durch das Grafikinterface leider schon recht schnell erschöpft und ich hatte Schwierigkeiten alle Texte und Bilder in den Speicher zu bekommen. Der RP2040 kommt auch mit ganzen 120Mhz und mehreren Kernen her, anstelle von nur 16Mhz und einem Kern, ein willkommenes Upgrade.
 
@@ -168,18 +168,18 @@ Also habe ich mit etwas rumprobieren, versucht meinen eigenen Algorithmus zu ers
 Beim PID-Tuning wird das Heizelement erst einmal in einem [Bang-Bang-Modus](https://control.com/textbook/closed-loop-control/onoff-control/) betrieben, währenddessen werden einige Daten gesammelt und aus diesen Daten berechnet ein Algorithmus die PID-Faktoren.
 
 {% gi 2 2 %}
-  ![](/img/bangbang1.webp)
-  ![](/img/bangbang2.webp)
+  ![](/post_assets/Hotplate/bangbang1.webp)
+  ![](/post_assets/Hotplate/bangbang2.webp)
 {% endgi %}
 
 Angefangen habe ich damit, den Algorithmus so zu entwerfen wie ich PID und Heizkurven verstehe. Logisch heranzugehen was nach meinem Verständnis dazu beitragen würde eine gute saubere Kurve zu erzeugen. Natürlich hat mich das nicht sehr weit gebracht. So bin ich dann dazu übergegangen Zahlen miteinander zu kombinieren die mich nahe an die Werte heranbringen die ich erwarte. Ich hatte mehrere Szenarien die auf bestimmte Art nicht funktionierten und mit den Graphen von crystalinstruments konnte ich abschätzen welcher Faktor in etwa in welche Richtung angepasst werden müsste um das zu lösen. Dann habe ich geschaut welche Werte spezifisch zu den Szenarien sind die nicht funktionieren und die dann versucht mit zu verrechnen bis ich ein gutes Ergebnis bekam. Am Ende habe ich eigentlich nicht mehr verstanden was ich tue, aber das Ergebnis war gut. Es hat alle meine Testszenarien erfüllt, bei ein paar Szenarien hätten die Werte etwas optimaler sein können. Mit dieser Methode löse ich das auch nur annäherungsweise, es ist keine ganz korrekte Methode und das letzte bisschen rauszuholen ist recht aufwendig. So die klassische 80/20-Regel, mit 20% des Aufwandes komme ich so etwa 80% zur Lösung, die restlichen 20% würden aber 80% der Zeit dauern und es ist aktuell gut genug.
 
 {% gi 5 2-3 %}
-  ![](/img/Test1.webp)
-  ![](/img/Test2.webp)
-  ![](/img/Test3.webp)
-  ![](/img/Test6.webp)
-  ![](/img/Test_HotPlate.webp)
+  ![](/post_assets/Hotplate/Test1.webp)
+  ![](/post_assets/Hotplate/Test2.webp)
+  ![](/post_assets/Hotplate/Test3.webp)
+  ![](/post_assets/Hotplate/Test6.webp)
+  ![](/post_assets/Hotplate/Test_HotPlate.webp)
 {% endgi %}
 
 ### Sinuswelle zu Leistung
@@ -194,7 +194,7 @@ Mit dem RP2040 bestimmte ich dann die Wartezeit um den Triac bei zum Beispiel 50
 
 Bei 0%, 50% und 100% ist der Zeitpunkt an dem der Triac an geschalten werden muss gleich der Fläche, in allen anderen Fällen gibt es aber eine gewisse Abweichung. 
 
-![Sinuskurve](/img/Sinus_graph.webp)
+![Sinuskurve](/post_assets/Hotplate/Sinus_graph.webp)
 [Interaktiver Link](https://www.desmos.com/calculator/t0subox9jh)
 
 Nach etwas Recherche habe ich Formeln gefunden wo man die Fläche eines Segmentes eines Kreises berechnen kann, der an einem bestimmten Punkt abgeschnitten wurde. Das Problem war, ich suche das Gegenteil, eine Formel um anhand der Fläche den Punkt zu finden wo die Sinuskurve abgeschnitten werden kann. Ich hatte Formeln umstellen in der Schule, ich habe aber nie eine so komplizierte Formel umgestellt und anstatt es erst einmal selbst zu probieren, habe ich mich an ChatGPT gewannt.
@@ -245,11 +245,11 @@ Wieso? Das fragte ich mich die nächsten Wochen häufiger.
 
 Ich habe den Mikrocontroller ausgetauscht, bin von Arduino IDE nach Platform.IO gewechselt und benutze ein anderes Framework um den RP2040 zu steuern. Irgendwo dort sollte der Fehler sein, ich habe mir etwas den Quellcode des neuen Frameworks angeschaut, bin daraus aber nicht schlau geworden und habe mich entschieden zu versuchen einen debugger einzurichten. Eine Methode das mit einem RP2040 zu machen ist es ein Debug-Probe zu verwenden.
 
-![Debug Probe](/img/Debug_probe.webp)
+![Debug Probe](/post_assets/Hotplate/Debug_probe.webp)
 
 Nachdem ich die Firmware dafür kompiliert und übertragen hatte, musste ich den Debug-Probe noch an die SWDIO und SWDCLK Pins anschließen. Leider sind diese Pins auf dem Waveshare RP2040-zero winzig, etwa 1mm x 1mm. Da Kabel anzulöten hat sich für mich als zu schwierig erwiesen, ich habe dabei ein Pad abgerissen.
 
-![Waveshare RP2040-zero](/img/Waveshare_RP2040_back.webp)
+![Waveshare RP2040-zero](/post_assets/Hotplate/Waveshare_RP2040_back.webp)
 
 Das nächste war einen neuen Mikrokontroller zu kaufen. Die RaspberryPi Zero sind günstiger als die Waveshare-Variante, dafür aber deutlich größer als der Waveshare oder der Arduino Pro Micro. Der neuen Chip würde nicht sauber in das Gehäuse passen, das war jetzt aber egal, ich wollte vorwärts kommen.
 
@@ -267,7 +267,7 @@ Es gibt jetzt noch das Problem, warum kam es zu einem timeout beim Übertragen d
 
 Software-seitig hat also alles funktioniert, aus irgendeinem Grund kamen die Pakete nicht an, um das herauszufinden, versuchte ich als nächstes die Hardware zu debuggen. Mein größter Freund dabei war, ein [Oszilloskop](https://de.wikipedia.org/wiki/Oszilloskop) an die Datenleitung anzuschließen und zu schauen was da abgeht.
 
-![Oszilloskop](/img/Oszilloskop.webp)
+![Oszilloskop](/post_assets/Hotplate/Oszilloskop.webp)
 
 Glücklicherweise kann mein Oszilloskop ein paar verschiedene Hardware-Protokolle verstehen, darunter auch I²C. Damit hatte sich gezeigt, dass die meisten Pakete vollständig sind, tatsächlich werden alle Pakete korrekt gesendet. Ein Detail des I²C Protokolls ist aber, dass jedes Paket vom Empfänger bestätigt werden muss, durch runterziehen der Datenleitung auf 0 Volt. Der Display versucht das, schafft nach einigen Paketen aber nur noch so 1-2 Volt, welche vom Mikrokontroller dann als nicht empfangen interpretiert werden, was dann den Sendungsvorgang durcheinander bringt.
 
@@ -300,7 +300,7 @@ Etwas das ich für zukünftige Projekte auch anpassen werde ist deutlich großz�
 Etwas, das ich Zukunft lernen muss, ist es nicht am Anfang schon zu tief zu gehen, um zu verhindern, dass ich an Teilen arbeite die sich dann als unnötig herausstellen, wie die Leistung der Sinuswelle.
 
 {% gi 3 1-2 %}
-  ![3D Modell](/img/Hotplate_3dmodel_nicer.webp)
-  ![KiCad V2 vorne](/img/Hotplate_kicad_v2_front.webp)
-  ![KiCad V2 hinten](/img/Hotplate_kicad_v2_back.webp)
+  ![3D Modell](/post_assets/Hotplate/Hotplate_3dmodel_nicer.webp)
+  ![KiCad V2 vorne](/post_assets/Hotplate/Hotplate_kicad_v2_front.webp)
+  ![KiCad V2 hinten](/post_assets/Hotplate/Hotplate_kicad_v2_back.webp)
 {% endgi %}

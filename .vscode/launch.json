@@ -5,10 +5,22 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "command": "npm run build",
-            "name": "Run npm build",
+            "command": "yarn run build",
+            "name": "Run yarn build",
             "request": "launch",
             "type": "node-terminal"
-        }
+        },
+        {
+            "command": "yarn run server",
+            "name": "Run yarn server",
+            "request": "launch",
+            "type": "node-terminal"
+        },
+        {
+            "command": "yarn run webp source/post_assets/GameJam/animationtree.png",
+            "name": "Run yarn webp",
+            "request": "launch",
+            "type": "node-terminal"
+        },
     ]
 }

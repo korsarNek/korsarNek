@@ -1,7 +1,8 @@
 const pagination = require('hexo-pagination');
 const createWarehouseWrapper = require('./warehouse');
 const url = require('url');
-const { theme } = require('hexo/dist/hexo/default_config');
+const fs = require('fs');
+const yaml = require('js-yaml');
 
 const fmtNum = num => num.toString().padStart(2, '0');
 
@@ -57,13 +58,13 @@ hexo.extend.helper.register('lang_tags', function (lang) {
     }, []));
 });
 
-const originalTagCloud = hexo.extend.helper.get('tagcloud');
+//const originalTagCloud = hexo.extend.helper.get('tagcloud');
 // The original tagcloud didn't even use url_for helper...
 hexo.extend.helper.register('tagcloud', function (tags, options) {
-    const lang = options.language
+    /*const lang = options.language
         ? options.language
         : options.lang;
-    const tagDirPrefix = '/' + hexo.config.tag_dir;
+    const tagDirPrefix = '/' + hexo.config.tag_dir;*/
 
     // For finding the correct page in the url_for call.
     options = {
@@ -71,11 +72,33 @@ hexo.extend.helper.register('tagcloud', function (tags, options) {
         layout: 'tag',
     };
 
-    const html = originalTagCloud.call(hexo, tags, options);
+    //const html = originalTagCloud.call(hexo, tags, options);
+    return tags.map(t => `<a href="${url_for(t.path, options)}">${t.name}</a>`).join('');
+
     // Can't be bothered to fix the original tagcloud, so we'll just replace the links.
-    return html.replace(/href="([^"]+)"/g, (_, url) => {
+    /*return html.replace(/href="([^"]+)"/g, (_, url) => {
         return 'href="' + url_for.call(hexo, url, options) + '"';
-    });
+    });*/
+});
+
+hexo.extend.helper.register('has_multiple_languages', function (page) {
+    if (page.layout === 'post') {
+        const otherPost = hexo.locals.get('posts').data.find(p => p.id === page.id && p.language !== page.language);
+        return otherPost !== undefined;
+    } if (page.layout === 'tag') {
+        for (const [key, value] of Object.entries(this.config.tags)) {
+            if (page.tag === key || page.tag === value)
+                return true;
+        }
+        return false;
+    } else {
+        const otherPage = hexo.locals.get('pages').data.find(p => p.layout === page.layout && p.language !== page.language);
+        return otherPage !== undefined;
+    }
+});
+
+hexo.locals.set('languages', () => {
+    return getLanguages();
 });
 
 function indexGenerator(locals) {
@@ -368,35 +391,46 @@ function localSearchGenerator(locals) {
     }, []);
 }
 
-function generateJsConfig() {
-  let { config, theme, fluid_version, page } = this;
-  const exportConfig = {
-    hostname: url.parse(config.url).hostname || config.url,
-    root: config.root,
-    version: fluid_version,
-    typing: theme.fun_features.typing,
-    anchorjs: theme.fun_features.anchorjs,
-    progressbar: theme.fun_features.progressbar,
-    code_language: theme.code.language,
-    copy_btn: theme.code.copy_btn,
-    image_caption: theme.post.image_caption,
-    image_zoom: theme.post.image_zoom,
-    toc: theme.post.toc,
-    lazyload: theme.lazyload,
-    web_analytics: theme.web_analytics,
-    search_path: url_for(theme.search.path, { lang: page.language }),
-    include_content_in_search: theme.search.content,
-  };
-  return `<script id="fluid-configs">
-    var Fluid = window.Fluid || {};
-    Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = ${JSON.stringify(exportConfig)};
+let translations = undefined;
 
-    if (CONFIG.web_analytics.follow_dnt) {
-      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
-      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+function generateJsConfig() {
+    if (translations === undefined && fs.existsSync('_i18n.yml')) {
+        const i18nKeys = yaml.load(fs.readFileSync('_i18n.yml'))?.i18n?.keys;
+        translations = Object.entries(i18nKeys).reduce((acc, [key, data]) => {
+            acc[key] = data[this.page.language];
+            return acc;
+        }, {});
     }
-  </script>`;
+
+    let { config, theme, fluid_version, page } = this;
+    const exportConfig = {
+        hostname: url.parse(config.url).hostname || config.url,
+        root: config.root,
+        version: fluid_version,
+        typing: theme.fun_features.typing,
+        anchorjs: theme.fun_features.anchorjs,
+        progressbar: theme.fun_features.progressbar,
+        code_language: theme.code.language,
+        copy_btn: theme.code.copy_btn,
+        image_caption: theme.post.image_caption,
+        image_zoom: theme.post.image_zoom,
+        toc: theme.post.toc,
+        lazyload: theme.lazyload,
+        web_analytics: theme.web_analytics,
+        search_path: url_for(theme.search.path, { lang: page.language }),
+        include_content_in_search: theme.search.content,
+        translations,
+    };
+    return `<script id="fluid-configs">
+        var Fluid = window.Fluid || {};
+        Fluid.ctx = Object.assign({}, Fluid.ctx)
+        var CONFIG = ${JSON.stringify(exportConfig)};
+
+        if (CONFIG.web_analytics.follow_dnt) {
+        var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+        Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+        }
+    </script>`;
 }
 
 // https://github.com/neverbot/hexo-multilang/blob/develop/lib/helpers.js

@@ -67,8 +67,8 @@ code:
       # 在链接中挑选 style 填入
       # Select a style in the link
       # See: https://highlightjs.org/static/demo/
-      style: "github gist"
-      style_dark: "dark"
+      style: "github"
+      style_dark: "github-dark"
 
     prismjs:
       # 在下方链接页面右侧的圆形按钮挑选 style 填入，也可以直接填入 css 链接
@@ -235,7 +235,9 @@ font:
 
 # 指定自定义 .js 文件路径，支持列表；路径是相对 source 目录，如 /js/custom.js 对应存放目录 source/js/custom.js
 # Specify the path of your custom js file, support list. The path is relative to the source directory, such as `/js/custom.js` corresponding to the directory `source/js/custom.js`
-custom_js: /js/customjs.js
+custom_js:
+  - /js/customjs.js
+  - manifest:youtube
 
 # 指定自定义 .css 文件路径，用法和 custom_js 相同
 # The usage is the same as custom_js
@@ -724,6 +726,10 @@ post:
     # See: http://mermaid-js.github.io/mermaid/
     options: { theme: 'default' }
 
+  threejs:
+    enable: true
+    specific: true
+
   # 评论插件
   # Comment plugin
   comments:
@@ -944,9 +950,9 @@ tag:
   banner_mask_alpha: 0.0
   custom_css: /css/reflective-banner.css
   tagcloud:
-    min_font: 15
-    max_font: 30
-    unit: px
+    min_font: 0.875
+    max_font: 0.875
+    unit: rem
     start_color: "#BBBBEE"
     end_color: "#337ab7"
 
