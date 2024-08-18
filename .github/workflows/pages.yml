@@ -18,13 +18,6 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '18'
-      - name: Cache Yarn dependencies
-        uses: actions/cache@v2
-        with:
-          path: node_modules
-          key: ${{ runner.OS }}-yarn-cache
-          restore-keys: |
-            ${{ runner.OS }}-yarn-cache
       - name: Install Dependencies
         run: yarn install
       - name: Vite Build
