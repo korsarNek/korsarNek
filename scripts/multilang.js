@@ -5,7 +5,20 @@ const fs = require('fs');
 const yaml = require('js-yaml');
 
 const fmtNum = num => num.toString().padStart(2, '0');
+hexo.model('Tag').schema.virtual('path', function () {
+    const name = this.name;
 
+    const tagPages = hexo.locals.get('pages').data.filter(p => p.layout === 'tags');
+
+    let basePath = makeDirectory(hexo.config.tag_dir);
+    const tagMap = hexo.config.tags || {};
+    if (tagMap[name] !== undefined)
+        basePath = makeDirectory(tagPages.find(p => p.language === 'en').path);
+    else if (Object.getOwnPropertyNames(tagMap).find(key => tagMap[key] === name))
+        basePath = makeDirectory(tagPages.find(p => p.language === 'de').path);
+
+    return basePath + this.slug;
+});
 function getLanguages() {
     let languages = [...hexo.config.language];
     var defaultLangIndex = languages.indexOf('default');
@@ -65,12 +78,6 @@ hexo.extend.helper.register('tagcloud', function (tags, options) {
         ? options.language
         : options.lang;
     const tagDirPrefix = '/' + hexo.config.tag_dir;*/
-
-    // For finding the correct page in the url_for call.
-    options = {
-        ...options,
-        layout: 'tag',
-    };
 
     //const html = originalTagCloud.call(hexo, tags, options);
     return tags.map(t => `<a href="${url_for(t.path, options)}">${t.name}</a>`).join('');
@@ -445,45 +452,6 @@ function url_for(path = '', options = {}) {
     let condition = (p) => false;
     if (lang) {
         if (options.layout) {
-            if (options.layout === 'tag') {
-                const tagPage = hexo.locals.get('pages').data.find(p => p.layout === 'tags' && (p.language === lang));
-                if (tagPage) {
-                    let tagPath = path;
-                    if (tagPath.startsWith('/'))
-                        tagPath = tagPath.substring(1);
-                    const allTagPages = hexo.locals.get('pages').data.filter(p => p.layout === 'tags');
-                    allTagPages.forEach(p => {
-                        const pagePath = makeDirectory(p.path);
-                        if (tagPath.startsWith(pagePath))
-                            tagPath = tagPath.substring(pagePath.length);
-                    });
-                    if (tagPath.startsWith(hexo.config.tag_dir))
-                        tagPath = tagPath.replace(hexo.config.tag_dir, '');
-
-                    tagPath = makeDirectory(tagPath).slice(0, -1);
-                    if (tagPath.startsWith('/'))
-                        tagPath = tagPath.substring(1);
-
-                    const sourceTag = hexo.locals.get('tags').toArray().find(tag => tagPath === tag.slug);
-                    const sourceLanguage = sourceTag.posts.findOne(p => p.language)?.language || defaultLang;
-                    if (sourceTag && sourceLanguage !== lang) {
-                        const tagMap = this.config.tags || {};
-                        if (tagMap[tagPath])
-                            tagPath = tagMap[tagPath];
-                        else {
-                            const key = Object.getOwnPropertyNames(tagMap).find(key => tagMap[key] === tagPath);
-                            if (key)
-                                tagPath = key;
-                        }
-                    }
-
-                    const targetTag = hexo.locals.get('tags').toArray().find(tag => tagPath === tag.slug && tag.posts.some(p => p.language === lang));
-                    if (targetTag) {
-                        return original_url_for(makeDirectory(tagPage.path) + tagPath);
-                    }
-                }
-            }
-
             if (options.id) {
                 condition = (p) => p.id === options.id && (p.language == lang || (!p.language && lang === defaultLang)) && p.layout == options.layout;
             } else {
@@ -501,6 +469,11 @@ function url_for(path = '', options = {}) {
         const post = hexo.locals.get('posts').data.find(condition);
         if (post)
             path = post.path;
+        else {
+            const tag = hexo.locals.get('tags').data.find(t => t.path === path);
+            if (tag !== undefined)
+                return path;
+        }
     }
 
     const url = original_url_for(path);

@@ -65,7 +65,7 @@ page.custom_css = theme.index.custom_css
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             <% post.tags.each(function(tag){ %>
-              <a href="<%= url_for(tag.path, {lang: page.language, layout: 'tag'}) %>">#<%- tag.name %></a>
+              <a href="<%= url_for(tag.path, {lang: page.language}) %>">#<%- tag.name %></a>
             <% }) %>
           </div>
         <% } %>
