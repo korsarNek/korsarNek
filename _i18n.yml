@@ -6,3 +6,6 @@ i18n:
     show-youtube:
       de: Youtube-Videos laden?
       en: Load Youtube videos?
+    reset-view:
+      de: Ansicht zurücksetzen
+      en: reset view

@@ -1,6 +1,6 @@
 import { Scene, PerspectiveCamera, WebGLRenderer, HemisphereLight, DirectionalLight, MathUtils, Vector3, Vector2, Mesh, Object3DEventMap, Box3, Object3D, BufferGeometry, Material, AnimationMixer, Clock, AnimationClip, Matrix4, Group, Euler } from 'three';
 import { DRACOLoader, GLTFLoader, Sky, WebGL } from 'three/examples/jsm/Addons.js';
-import { getCorners, isBot, isRunningOnBrowser, skip } from './utils';
+import { getCorners, isBot, isRunningOnBrowser, skip, translate } from './utils';
 import './loading-circle';
 import './touch-hint';
 
@@ -158,7 +158,8 @@ function initializeThreeJs(element: HTMLElement) {
 		const icon = document.createElement("img");
 		icon.className = "orbit";
 		icon.src = "/icons/orbit.svg";
-		icon.alt = "orbit";
+		icon.alt = translate('reset-view');
+		icon.title = translate('reset-view');
 		icon.addEventListener('click', () => {
 			controls.reset();
 		});

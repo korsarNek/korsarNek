@@ -34,3 +34,7 @@ export function* skip<T>(array: T[], count: number) {
         yield array[i];
     }
 }
+
+export function translate(key: string): string {
+    return CONFIG?.translations?.[key] ?? key;
+}

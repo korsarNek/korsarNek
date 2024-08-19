@@ -1,3 +1,5 @@
+import { translate } from "./utils";
+
 class Youtube extends HTMLElement {
     static observedAttributes = ['aspect-ratio', 'video-id', 'banner-text'];
 
@@ -87,7 +89,7 @@ class Youtube extends HTMLElement {
     }
 
     public get bannerText(): string {
-        return this.getAttribute('banner-text') ?? CONFIG?.translations?.['show-youtube'];
+        return this.getAttribute('banner-text') ?? translate('show-youtube');
     }
 
     public set bannerText(value: string) {
