@@ -1,11 +1,13 @@
 :root {
     --dark-banner-text: black;
-    --graph-color: #0077aa;   
+    --graph-color: #0077aa;
+    --nav-item-hover: #86cdff;
 }
 
 [data-user-color-scheme="dark"] {
     --graph-color: #30a9de;
     --highlight-bg-color: #202730;
+    --nav-item-hover: white;
 }
 
 body {
@@ -61,10 +63,36 @@ body {
 
 .navbar {
     text-shadow: rgba(0, 0, 0, 0.5) 0 0 1.5px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 }
 
 .navbar .dropdown-menu {
     min-width: 1rem;
+}
+
+.navbar.scrolling-navbar.top-nav-collapse {
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+}
+
+.navbar.scrolling-navbar {
+    will-change: background, padding, box-shadow;
+    transition: background 0.5s ease-in-out, padding 0.25s ease-in-out, box-shadow 0.5s ease-in-out;
+    box-shadow: unset;
+}
+
+@media (min-width: 600px) {
+    .navbar.scrolling-navbar {
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+}
+
+.navbar .nav-item .nav-link:hover, .navbar .nav-item .nav-link:focus {
+    color: var(--nav-item-hover) !important;
+}
+
+.navbar .navbar-brand:focus, .navbar .navbar-brand:hover {
+    color: var(--nav-item-hover) !important;
 }
 
 .navbar-toggler .animated-icon span {
