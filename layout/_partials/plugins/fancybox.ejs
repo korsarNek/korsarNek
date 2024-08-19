@@ -3,8 +3,11 @@ import_css('https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybo
 
 import_script(`
 <script>
-  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js', function() {
-    Fluid.plugins.fancyBox();
+  // Wrap in DOMLoaded to make sure, others were able to override the plugin before we start doing anything with it.
+  Fluid.utils.listenDOMLoaded(() => {
+    Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js', function() {
+      Fluid.plugins.fancyBox();
+    });
   });
 </script>
 `)
