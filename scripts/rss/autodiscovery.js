@@ -16,7 +16,6 @@ function autodiscoveryInject(renderedHtml) {
   let autodiscoveryTag = '';
   const title = feed.title || config.title;
 
-  //Is already an 
   if (renderedHtml.match(/type=['|"]?application\/(atom|rss)\+xml['|"]?/i) || feed.autodiscovery === false) return;
 
   Object.entries(types).forEach(([type, properties]) => {

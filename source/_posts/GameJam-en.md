@@ -8,7 +8,7 @@ mermaid: false
 threejs: true
 banner_img: /img/city.webp
 title_class: banner-text-bright
-image: post_assets/GameJam/navigationmesh.webp
+image: /post_assets/GameJam/navigationmesh.webp
 tags:
     - Programming
     - 3D Modeling
