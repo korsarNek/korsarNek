@@ -109,13 +109,14 @@ server:
 
 feed:
   icon: img/favicon.webp
+  title: Korsar's Blog - {type} - {language}
   types:
     atom:
       input: layout/feed/atom.xml
-      output: xml/atom.xml
+      output: xml/atom-{language}.xml
     rss:
       input: layout/feed/rss.xml
-      output: xml/rss.xml
+      output: xml/rss-{language}.xml
 
 tags:
   Electronics: Elektronik

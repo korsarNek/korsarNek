@@ -6,6 +6,7 @@ const { readFileSync } = require('fs');
 const { encodeURL, gravatar, full_url_for } = require('hexo-util');
 const Locals = require('hexo/dist/hexo/locals');
 const Post = require('hexo/dist/hexo/post');
+const { getLanguages } = require('../helpers');
 
 env.addFilter('uriencode', str => {
   return encodeURL(str);
@@ -25,19 +26,18 @@ env.addFilter('noControlChars', str => {
  * 
  * @param {Locals} locals 
  * @param {RssProperties} properties
+ * @param {string} name
  * @returns 
  */
-module.exports = function(locals, properties) {
+module.exports = function (locals, properties, name) {
   const { config } = this;
+  const defaultLang = config.permalink_defaults.lang || config.permalink_defaults.language;
   const { email, feed, url: urlCfg } = config;
   const { icon: iconCfg, limit, order_by } = feed;
+  const title = feed.title || config.title;
 
   env.addFilter('formatUrl', str => {
     return full_url_for.call(this, str);
-  });
-
-  env.addFilter('filterByLanguage', (posts, language) => {
-    return posts.filter(p => p.language === language);
   });
 
   const template = nunjucks.compile(readFileSync(properties.input, 'utf8'), env);
@@ -53,29 +53,41 @@ module.exports = function(locals, properties) {
     return;
   }
 
-  if (limit) posts = posts.limit(limit);
+  let languages = [defaultLang];
+  if (properties.output.includes('{language}')) {
+    languages = getLanguages(this);
+  }
 
-  let url = urlCfg;
-  if (url[url.length - 1] !== '/') url += '/';
+  const result = [];
+  for (const language of languages) {
+    let filteredPosts = posts.filter(p => p.language === language);
 
-  let icon = '';
-  if (iconCfg) icon = full_url_for.call(this, iconCfg);
-  else if (email) icon = gravatar(email);
+    if (limit) filteredPosts = filteredPosts.limit(limit);
 
-  const feed_url = full_url_for.call(this, properties.output);
+    let url = urlCfg;
+    if (url[url.length - 1] !== '/') url += '/';
 
-  //TODO: generate one per language.
-  const data = template.render({
-    config,
-    url,
-    icon,
-    posts,
-    feed_url,
-    languages: locals.languages,
-  });
+    let icon = '';
+    if (iconCfg) icon = full_url_for.call(this, iconCfg);
+    else if (email) icon = gravatar(email);
 
-  return {
-    path: properties.output,
-    data
-  };
+    const feed_url = full_url_for.call(this, properties.output);
+
+    const data = template.render({
+      config,
+      title: title.replace('{type}', name).replace('{language}', language),
+      url,
+      icon,
+      posts: filteredPosts,
+      feed_url,
+      language,
+    });
+
+    result.push({
+      path: properties.output.replace('{language}', language),
+      data
+    });
+  }
+
+  return result;
 };

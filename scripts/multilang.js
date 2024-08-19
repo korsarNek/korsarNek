@@ -2,14 +2,12 @@ const pagination = require('hexo-pagination');
 const createWarehouseWrapper = require('./warehouse');
 const url = require('url');
 const fs = require('fs');
-const p = require('path');
 const yaml = require('js-yaml');
+const { getLanguages } = require('./helpers');
 
 const fmtNum = num => num.toString().padStart(2, '0');
 hexo.model('Tag').schema.virtual('path', function () {
     const name = this.name;
-
-    const tagPages = hexo.locals.get('pages').data.filter(p => p.layout === 'tags');
 
     let basePath = makeDirectoryPath(hexo.config.tag_dir);
     const tagMap = hexo.config.tags || {};
@@ -20,14 +18,6 @@ hexo.model('Tag').schema.virtual('path', function () {
 
     return makeDirectoryPath(basePath + this.slug);
 });
-function getLanguages() {
-    let languages = [...hexo.config.language];
-    var defaultLangIndex = languages.indexOf('default');
-    if (defaultLangIndex !== -1) {
-        languages.splice(defaultLangIndex, 1);
-    }
-    return languages;
-}
 
 function makeDirectoryPath(url) {
     url = url.replace(/index.html$/, '').replace(/\.html$/, '');
@@ -112,20 +102,16 @@ hexo.extend.helper.register('has_multiple_languages', function (page) {
 });
 
 hexo.locals.set('languages', () => {
-    return getLanguages();
+    return getLanguages(hexo);
 });
 
 function indexGenerator(locals) {
     const config = this.config;
     const defaultLang = config.permalink_defaults.lang || config.permalink_defaults.language;
     const posts = locals.index_posts.sort(config.index_generator.order_by);
-    const languages = getLanguages();
+    const languages = getLanguages(hexo);
 
     posts.data.sort((a, b) => (b.sticky || 0) - (a.sticky || 0));
-    posts.data.forEach(post => {
-        //TODO: fix path by removing the default language prefix?
-        //post.path =
-    });
 
     const paginationDir = config.pagination_dir || 'page';
     const path = config.index_generator.path || '';
@@ -388,7 +374,7 @@ function localSearchGenerator(locals) {
         posts = locals.posts.sort('-date');
     }
 
-    return getLanguages().reduce((acc, lang) => {
+    return getLanguages(hexo).reduce((acc, lang) => {
         const xml = searchTmpl.render({
             config: config,
             posts: createWarehouseWrapper(filterByLanguage(posts || [], lang)),

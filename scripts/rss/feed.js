@@ -1,8 +1,6 @@
 /* global hexo */
 'use strict';
 
-const { parse } = require('path');
-
 hexo.config.feed = Object.assign({
   type: 'atom',
   limit: 20,
@@ -23,7 +21,7 @@ if (typeof config.types !== 'object') {
 
 for (const [name, properties] of Object.entries(config.types)) {
   hexo.extend.generator.register(name, locals => {
-    return feedFn.call(hexo, locals, properties);
+    return feedFn.call(hexo, locals, properties, name);
   });
 }
 
