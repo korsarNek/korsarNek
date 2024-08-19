@@ -59,7 +59,7 @@ class Youtube extends HTMLElement {
     }
 
     private get youtubeIframe(): string {
-        return `<iframe src="${this.videoLink}" style="aspect-ratio: ${this.aspectRatio}" title="Youtube video player" frameborder="0" allow="autoplay" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen"></iframe>`;
+        return `<iframe src="${this.videoLink}" style="aspect-ratio: ${this.aspectRatio}" title="Youtube video player" frameborder="0" allow="autoplay; fullscreen;" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen"></iframe>`;
     }
 
     private get showBanner(): boolean {
