@@ -71,7 +71,7 @@ module.exports = function (locals, properties, name) {
     if (iconCfg) icon = full_url_for.call(this, iconCfg);
     else if (email) icon = gravatar(email);
 
-    const feed_url = full_url_for.call(this, properties.output);
+    const feed_url = full_url_for.call(this, properties.output.replace('{language}', language));
 
     const data = template.render({
       config,
