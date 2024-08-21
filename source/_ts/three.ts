@@ -216,7 +216,7 @@ const resizeObserver = new ResizeObserver((entries, _) => {
 	for (const entry of entries) {
 		if (!resizeRequested) {
 			resizeRequested = true;
-			requestIdleCallback(() => {
+			setTimeout(() => {
 				resizeRequested = false;
 				if (isThreeJsElement(entry.target)) {
 					entry.target.threejs.renderer.setSize(entry.contentRect.width * window.devicePixelRatio, entry.contentRect.height * window.devicePixelRatio, false);
@@ -238,7 +238,7 @@ window.addEventListener('DOMContentLoaded', () => {
 				if (isThreeJsElement(entry.target)) {
 					startLoop(entry.target);
 				} else {
-					requestIdleCallback(() => {
+					setTimeout(() => {
 						initializeThreeJs(<HTMLElement>entry.target);
 					});
 				}
