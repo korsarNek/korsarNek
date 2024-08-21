@@ -1,4 +1,6 @@
-class TouchHint extends HTMLElement {
+import { delayedLastCancellable } from './debounce';
+
+export class TouchHint extends HTMLElement {
     static observedAttributes = ['hint'];
 
     connectedCallback() {
@@ -26,16 +28,18 @@ class TouchHint extends HTMLElement {
             <div class="touch-hint">${this.hint}</div>
         `;
 
-        const touchHint = shadow.querySelector<HTMLDivElement>('.touch-hint')!;
-        touchHint.addEventListener('touchstart', function (e) {
+        const showHint = delayedLastCancellable(function (this: HTMLDivElement, e: TouchEvent) {
             if (e.targetTouches.length == 1) {
                 this.style.opacity = '1';
             } else {
                 this.style.opacity = '0';
             }
-        });
-        touchHint.addEventListener('touchend', function (e) {
+        }, 200);
+        const touchHint = shadow.querySelector<HTMLDivElement>('.touch-hint')!;
+        touchHint.addEventListener('touchstart', showHint.action);
+        touchHint.addEventListener('touchend', function () {
             this.style.opacity = '0';
+            showHint.cancel();
         });
     }
 

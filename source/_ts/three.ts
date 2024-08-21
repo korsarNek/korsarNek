@@ -3,6 +3,7 @@ import { DRACOLoader, GLTFLoader, Sky, WebGL } from 'three/examples/jsm/Addons.j
 import { getCorners, isBot, isRunningOnBrowser, skip, translate } from './utils';
 import './loading-circle';
 import './touch-hint';
+import { TouchHint } from './touch-hint';
 
 type ThreeJsElement = HTMLElement & {
 	threejs: {
@@ -288,7 +289,6 @@ class OrbitControls {
 	private keysDown: Record<string, boolean> = {};
 	private pointersDown: Record<string, PointerState> = {};
 	private pinchStartDistance: number | undefined;
-	private originalDistance: number | undefined;
 	private targetExceptions: EventTarget[] = [];
 
 	constructor(camera: PerspectiveCamera) {
@@ -319,10 +319,6 @@ class OrbitControls {
 	}
 
 	public update(deltaTime: number) {
-		if (this.originalDistance === undefined) {
-			this.originalDistance = this.distance;
-		}
-
 		if (this.keysDown['KeyW']) {
 			if (this.keysDown['ShiftLeft']) {
 				this.translate(this.up.multiplyScalar(deltaTime * this.keyboardTranslationSpeed * this.distance));
@@ -415,8 +411,8 @@ class OrbitControls {
 		if (!isFinite(offset) || isNaN(offset))
 			return;
 
-		offset = offset * (this.originalDistance ?? 1);
 		const distance = this.distance;
+		offset = offset * distance;
 		if (distance - offset < this.minimumDistance) {
 			offset = distance - this.minimumDistance;
 		}
@@ -428,14 +424,14 @@ class OrbitControls {
 	}
 
 	public rotateVertically(offset: number) {
-		if (this.camera.rotation.x - offset < this.minimumVerticalRotation) {
-			offset = this.camera.rotation.x - this.minimumVerticalRotation;
+		if (this.camera.rotation.x + offset < this.minimumVerticalRotation) {
+			offset = this.minimumVerticalRotation - this.camera.rotation.x;
 		}
-		if (this.camera.rotation.x - offset > this.maximumVerticalRotation) {
-			offset = this.camera.rotation.x - this.maximumVerticalRotation;
+		if (this.camera.rotation.x + offset > this.maximumVerticalRotation) {
+			offset = this.maximumVerticalRotation - this.camera.rotation.x;
 		}
-		
-		this.camera.position.sub(this.target).applyAxisAngle(this.right, offset).add(this.target);
+		this.camera.position.sub(this.target).applyAxisAngle(this.right, -offset).add(this.target);
+		this.camera.rotation.x += offset;
 	}
 
 	public save() {
