@@ -642,16 +642,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/three@npm:^0.167.1":
-  version: 0.167.1
-  resolution: "@types/three@npm:0.167.1"
+"@types/three@npm:^0.167.2":
+  version: 0.167.2
+  resolution: "@types/three@npm:0.167.2"
   dependencies:
     "@tweenjs/tween.js": "npm:~23.1.2"
     "@types/stats.js": "npm:*"
     "@types/webxr": "npm:*"
     fflate: "npm:~0.8.2"
     meshoptimizer: "npm:~0.18.1"
-  checksum: 10c0/26bf7ba43507a80b56ac51517db7a3eab17ec89256c293c98f4842f9816fb0226564337876bad38529ea8790901bfa6358bcae75d819b50a1cef46954ac1ada1
+  checksum: 10c0/a88173f06017a35a7b1eefce0c6fc9e08b8c5c2e1764d2bf158b8e2b707b212e79d7aa1296a50633ef2af612d31fbe98be8b86b7cf74496b7484f1da3d20a1f6
   languageName: node
   linkType: hard
 
@@ -1744,7 +1744,7 @@ __metadata:
     "@types/js-yaml": "npm:^4.0.9"
     "@types/markdown-it": "npm:^14.1.2"
     "@types/nunjucks": "npm:^3.2.6"
-    "@types/three": "npm:^0.167.1"
+    "@types/three": "npm:^0.167.2"
     flag-icons: "npm:^7.2.0"
     hexo: "npm:^7.2.0"
     hexo-generator-archive: "npm:^2.0.0"
