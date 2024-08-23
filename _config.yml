@@ -107,6 +107,13 @@ deploy:
 server:
   compress: true
 
+markdown:
+  render:
+    linkify: false
+  disable_rules:
+    - linkify
+    - autolink
+
 feed:
   icon: img/favicon.webp
   title: Korsar's Blog - {type} - {language}
