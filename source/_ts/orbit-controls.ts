@@ -104,7 +104,7 @@ export class OrbitControls {
 		if ((entries.length == 1 && entries[0].isMouse) || entries.length >= 2) {
 			const averageLocationDelta = entries.reduce((acc, entry) => acc.add(entry.currentLocation.clone().sub(entry.lastFrameLocation)), new Vector2(0, 0)).divideScalar(entries.length);
 
-			if (this.keysDown['ShiftLeft']) {
+			if (this.keysDown['ShiftLeft'] || entries.length == 3) {
 				this.translate(this.clientToWorldSpace(entries[0].lastFrameLocation).sub(this.clientToWorldSpace(entries[0].currentLocation)));
 			} else {
 				this.rotateHorizontally(-averageLocationDelta.x / this.element!.clientWidth * this.pointerRotationSpeed);

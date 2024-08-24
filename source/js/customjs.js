@@ -23,11 +23,7 @@ Fluid.plugins.fancyBox = function (selector) {
             itemscope itemtype="http://schema.org/ImageObject" itemprop="url"></a>`
         ).parent('a');
         if ($imageWrap.length !== 0) {
-            if ($image.is('.group-image-container img')) {
-                $imageWrap.attr('data-fancybox', 'group').attr('rel', 'group');
-            } else {
-                $imageWrap.attr('data-fancybox', 'default').attr('rel', 'default');
-            }
+            $imageWrap.attr('data-fancybox', 'default').attr('rel', 'default');
 
             var imageTitle = $image.attr('title') || $image.attr('alt');
             if (imageTitle) {

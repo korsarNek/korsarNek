@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "compile": "tsc",
-    "build": "hexo generate",
+    "build": "vite build && hexo generate",
     "clean": "hexo clean",
     "deploy": "hexo deploy",
     "server": "hexo server",

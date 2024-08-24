@@ -234,18 +234,27 @@ function isThreeJsElement(element: Element): element is ThreeJsElement {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-	const intersectionObserver = new IntersectionObserver((entries) => {
+	const lazyLoadObserver = new IntersectionObserver((entries) => {
 		for (const entry of entries) {
-			if (entry.isIntersecting) {
-				if (isThreeJsElement(entry.target)) {
+			if (entry.isIntersecting && !isThreeJsElement(entry.target)) {
+				setTimeout(() => {
+					initializeThreeJs(<HTMLElement>entry.target);
+				});
+			}
+		}
+	}, {
+		threshold: [0],
+		rootMargin: '100% 0px 100% 0px'
+	});
+
+	const isVisibleObserver = new IntersectionObserver((entries) => {
+		for (const entry of entries) {
+			if (isThreeJsElement(entry.target)) {
+				if (entry.isIntersecting) {
 					startLoop(entry.target);
 				} else {
-					setTimeout(() => {
-						initializeThreeJs(<HTMLElement>entry.target);
-					});
+					stopLoop(entry.target);
 				}
-			} else if (isThreeJsElement(entry.target)) {
-				stopLoop(entry.target);
 			}
 		}
 	}, {
@@ -254,7 +263,8 @@ window.addEventListener('DOMContentLoaded', () => {
 	
 	for (const container of document.getElementsByTagName("threejs")) {
 		if (WebGL.isWebGL2Available()) {
-			intersectionObserver.observe(container);
+			lazyLoadObserver.observe(container);
+			isVisibleObserver.observe(container);
 		} else {
 			const warning = WebGL.getWebGL2ErrorMessage();
 			container.appendChild(warning);
