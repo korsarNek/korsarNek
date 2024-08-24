@@ -1755,7 +1755,7 @@ __metadata:
     hexo-renderer-markdown-it: "npm:^7.1.1"
     hexo-renderer-stylus: "npm:^3.0.0"
     hexo-server: "npm:^3.0.0"
-    hexo-theme-fluid: "npm:^1.9.7"
+    hexo-theme-fluid: "npm:^1.9.8"
     rollup-plugin-copy: "npm:^3.5.0"
     sharp: "npm:^0.33.5"
     three: "npm:^0.167.1"
@@ -1764,12 +1764,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"hexo-theme-fluid@npm:^1.9.7":
-  version: 1.9.7
-  resolution: "hexo-theme-fluid@npm:1.9.7"
+"hexo-theme-fluid@npm:^1.9.8":
+  version: 1.9.8
+  resolution: "hexo-theme-fluid@npm:1.9.8"
   peerDependencies:
     nunjucks: ^3.0.0
-  checksum: 10c0/e85c1149af1cd335abf92c29ead64195f61b1ad82a743714acd2a97660a22431428df67cca0bcfb44123e2264dd4e45fb20b5c803f591c09463da988faedc8d2
+  checksum: 10c0/2bb07be1791572bc1efa2114a26472775664cabfab39786409bff4342c3f9f9a804e46b48c617b5011072fe9684ea7a736fc22d41d0adcbafc5e241b0091907c
   languageName: node
   linkType: hard
 
