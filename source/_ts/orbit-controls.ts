@@ -242,7 +242,7 @@ export class OrbitControls {
 		}
 	}
 
-	private onFocusOut(e: FocusEvent) {
+	private onFocusOut(_e: FocusEvent) {
 		for (const key in this.keysDown) {
 			this.keysDown[key] = false;
 		}

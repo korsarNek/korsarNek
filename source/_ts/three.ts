@@ -1,4 +1,4 @@
-import { Scene, PerspectiveCamera, WebGLRenderer, HemisphereLight, DirectionalLight, MathUtils, Vector3, Vector2, Mesh, Object3DEventMap, Box3, Object3D, BufferGeometry, Material, AnimationMixer, Clock, AnimationClip, Matrix4, Group, Euler } from 'three';
+import { Scene, PerspectiveCamera, WebGLRenderer, HemisphereLight, DirectionalLight, MathUtils, Vector3, Mesh, Object3DEventMap, Box3, Object3D, BufferGeometry, Material, AnimationMixer, Clock, AnimationClip, Group } from 'three';
 import { DRACOLoader, GLTFLoader, Sky, WebGL } from 'three/examples/jsm/Addons.js';
 import { getCorners, isBot, isRunningOnBrowser, skip, translate } from './utils';
 import './loading-circle';
