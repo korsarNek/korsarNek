@@ -20,8 +20,6 @@ jobs:
           node-version: '18'
       - name: Install Dependencies
         run: yarn install
-      - name: Vite Build
-        run: yarn vite build
       - name: Build
         run: yarn build
       - name: Upload Pages artifact
