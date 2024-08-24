@@ -35,7 +35,7 @@
     "@types/markdown-it": "^14.1.2",
     "@types/nunjucks": "^3.2.6",
     "rollup-plugin-copy": "^3.5.0",
-    "sharp": "^0.33.4",
+    "sharp": "^0.33.5",
     "vite": "^5.4.2"
   },
   "packageManager": "yarn@4.4.0"
