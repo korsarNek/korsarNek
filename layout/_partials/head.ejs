@@ -1,0 +1,8 @@
+<% for(const lang of theme.languages || []) { %>
+  <% if(lang != page.language) { %>
+    <% var langPage = page_for_language(page, lang) %>
+    <% if(langPage) { %>
+      <link rel="alternate" hreflang="<%= lang %>" href="<%= url_for(page.path, {lang: lang, id: page.id, layout: page.layout}) %>" title="<%= langPage.title %>">
+    <% } %>
+  <% } %>
+<% } %>

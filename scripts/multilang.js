@@ -101,6 +101,22 @@ hexo.extend.helper.register('has_multiple_languages', function (page) {
     }
 });
 
+hexo.extend.helper.register('page_for_language', function (page, language) {
+    if (page.layout === 'post') {
+        return hexo.locals.get('posts').data.find(p => p.id === page.id && p.language === language);
+    } if (page.layout === 'tag') {
+        for (const [key, value] of Object.entries(this.config.tags)) {
+            if (page.tag === key)
+                return hexo.locals.get('tagPages').data.find(p => p.tag === value);
+            else if (page.tag === value)
+                return hexo.locals.get('tagPages').data.find(p => p.tag === key);
+        }
+        return null;
+    } else {
+        return hexo.locals.get('pages').data.find(p => p.layout === page.layout && p.language === language);
+    }
+})
+
 hexo.locals.set('languages', () => {
     return getLanguages(hexo);
 });
@@ -267,7 +283,7 @@ function tagGenerator(locals) {
 
     const tagPages = hexo.locals.get('pages').data.filter(p => p.layout === 'tags');
 
-    return tagPages.reduce((generatedPages, p) => {
+    const result = tagPages.reduce((generatedPages, p) => {
         const { source, __page, _id, date, full_source, layout, path, permalink, raw, title ,...pageProperties } = p;
 
         const pages = tags.reduce((result, tag) => {
@@ -278,12 +294,13 @@ function tagGenerator(locals) {
 
             const data = pagination(makeDirectoryPath(p.path) + tag.slug, posts, {
                 perPage: perPage,
-                layout: ['tag', 'archive', 'index'],
+                layout: 'tag',
                 format: paginationDir + '/%d/',
                 data: {
                     ...pageProperties,
                     tag: tag.name,
                     language: p.language,
+                    title: tag.name,
                 }
             });
 
@@ -299,7 +316,7 @@ function tagGenerator(locals) {
 
             pages.push({
                 path: tagDir,
-                layout: ['tag-index', 'tag', 'archive', 'index'],
+                layout: 'tag-index',
                 posts: locals.posts,
                 language: p.language,
                 data: {
@@ -321,6 +338,10 @@ function tagGenerator(locals) {
 
         return generatedPages.concat(pages);
     }, []);
+
+    hexo.locals.set('tagPages', createWarehouseWrapper(result.map(p => ({ layout: p.layout, ...p.data }))));
+
+    return result;
 };
 
 function localSearchGenerator(locals) {

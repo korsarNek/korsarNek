@@ -11,6 +11,10 @@ class WarehouseWrapper extends Array {
         return this;
     }
 
+    get data() {
+        return this;
+    }
+
     sort(key, ascending) {
         return super.sort((a, b) => {
             if (a[key] < b[key]) {
