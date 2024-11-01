@@ -1758,7 +1758,7 @@ __metadata:
     hexo-theme-fluid: "npm:^1.9.8"
     rollup-plugin-copy: "npm:^3.5.0"
     sharp: "npm:^0.33.5"
-    three: "npm:^0.167.1"
+    three: "npm:^0.170.0"
     typescript: "npm:^5.5.4"
     vite: "npm:^5.4.2"
   languageName: unknown
@@ -3331,10 +3331,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"three@npm:^0.167.1":
-  version: 0.167.1
-  resolution: "three@npm:0.167.1"
-  checksum: 10c0/3040ffb013b6bb063d96ecff51acc6e6390a92d616a0d0db39550ad516eb0be8e50342f0c2c97892fbd983d03c7319f44b56bde881e1f3e6bc612d559b1276ea
+"three@npm:^0.170.0":
+  version: 0.170.0
+  resolution: "three@npm:0.170.0"
+  checksum: 10c0/eeaa1eccb31467654a044fb90634b3b6bb8d0768a4f029c082fb6aa22aec0d6362d0e3af74938caa1db512b7823a031b54a76e88fba6cfd535054165ea9667c9
   languageName: node
   linkType: hard
 
