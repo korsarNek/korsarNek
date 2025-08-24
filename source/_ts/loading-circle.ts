@@ -167,7 +167,7 @@ class LoadingCircle extends HTMLElement {
         this.setAttribute('progress', '' + value);
     }
 
-    attributeChangedCallback(name, oldValue, newValue) {
+    attributeChangedCallback() {
         this.update();
     }
 }

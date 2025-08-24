@@ -51,7 +51,7 @@ export class TouchHint extends HTMLElement {
         this.setAttribute('hint', value);
     }
 
-    attributeChangedCallback(name, oldValue, newValue) {
+    attributeChangedCallback(name: string) {
         if (!this.shadowRoot)
             return;
 

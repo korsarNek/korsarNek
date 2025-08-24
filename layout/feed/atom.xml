@@ -6,7 +6,9 @@
   <link href="{{ feed_url | uriencode }}" rel="self"/>
   {% if config.feed.hub %}<link href="{{ config.feed.hub | uriencode }}" rel="hub"/>{% endif %}
   <link href="{{ url | uriencode }}"/>
+  {% if posts.length > 0 %}
   <updated>{% if posts.first().updated %}{{ posts.first().updated.toISOString() }}{% else %}{{ posts.first().date.toISOString() }}{% endif %}</updated>
+  {% endif %}
   <id>{{ url | uriencode }}</id>
   {% if config.author %}
   <author>

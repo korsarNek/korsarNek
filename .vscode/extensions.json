@@ -1,5 +1,6 @@
 {
     "recommendations": [
-        "digitalbrainstem.javascript-ejs-support"
+        "digitalbrainstem.javascript-ejs-support",
+        "ltex-plus.vscode-ltex-plus"
     ]
 }

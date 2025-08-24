@@ -1,0 +1,8 @@
+{"rule":"A_INFINITIVE","sentence":"^\\QThere are 2 different ways to make an include, either \\E(?:Dummy|Ina|Jimmy-|Dummy-|Maniquí-|Maniquíes-)[0-9]+\\Q or \\E(?:Dummy|Ina|Jimmy-|Dummy-|Maniquí-|Maniquíes-)[0-9]+\\Q.\\E$"}
+{"rule":"EN_A_VS_AN","sentence":"^\\QWith an \\E(?:Dummy|Ina|Jimmy-|Dummy-|Maniquí-|Maniquíes-)[0-9]+\\Q number, you start with 0 already at the minimum, and as soon as you subtract something, you get an underflow.\\E$"}
+{"rule":"EN_A_VS_AN","sentence":"^\\QWith an \\E(?:Dummy|Ina|Jimmy-|Dummy-|Maniquí-|Maniquíes-)[0-9]+\\Q number, you start with 0 already at the minimum and as soon as you subtract something, you get an underflow.\\E$"}
+{"rule":"DT_PRP","sentence":"^\\QThe I²C class cannot know what is connected at the other end and whether deactivating the device at the other end is better than letting it keep running.\\E$"}
+{"rule":"DT_PRP","sentence":"^\\QIt turns out that the timeout itself was executed even when the debugger took control and the timeout caused the I²C connection to be closed by the class and the display to turn off as a result.\\E$"}
+{"rule":"COMMA_COMPOUND_SENTENCE","sentence":"^\\QThe flickering was gone and I could interrupt the image build-up with the debugger, unfortunately, it then turned out that not all image data was transmitted cleanly.\\E$"}
+{"rule":"DT_PRP","sentence":"^\\QIf there was an I²C error, the block was not displayed and the image then shifted.\\E$"}
+{"rule":"DT_PRP","sentence":"^\\QA detail of the I²C protocol is that each packet must be acknowledged by the receiver by pulling the data line down to 0 volts.\\E$"}

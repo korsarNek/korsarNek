@@ -3,7 +3,7 @@ title: Game Jam
 date: 2024-08-18
 comment: true
 id: GameJam
-language: en
+lang: en
 mermaid: false
 threejs: true
 banner_img: /img/city.webp
@@ -36,7 +36,7 @@ Unfortunately, a trial working day for a company and a coding challenge for anot
 
 ### Engine
 
-I chose Godot as my engine. I had done a few smaller projects with Unity in the past, but after the [controversy with Unity](https://www.theverge.com/2023/9/12/23870547/unit-price-change-game-development), I wanted to try something else. With Godot you can do good 2D and some 3D, not very complex stuff, it can't keep up with Unreal Engine, but for a simple game it should be a good choice and not too hard to get into. A big plus is also that Godot is open source, which should make it a lot easier for me, if I get stuck somewhere I can look up what's happening and why something isn't working.
+I chose Godot as my engine. I had done a few smaller projects with Unity in the past, but after the [controversy with Unity](https://www.theverge.com/2023/9/12/23870547/unit-price-change-game-development), I wanted to try something else. With Godot, you can do good 2D and some 3D, not very complex stuff, it can't keep up with Unreal Engine, but for a simple game it should be a good choice and not too hard to get into. A big plus is also that Godot is open source, which should make it a lot easier for me, if I get stuck somewhere I can look up what's happening and why something isn't working.
 
 ## Implementation
 
@@ -118,7 +118,7 @@ To be able to use the animations in Godot, you have to convert the animation tra
 
 If you then export them as GLTF and import them back into Godot, you have an AnimationPlayer on the model that contains the clips, which you can connect to an AnimationTree node and then use the animations in the game.
 
-In Blender you can also place several animations in a strip and define transitions between the animations. This is useful to reuse several recurring animations for a longer animation in Blender, but for Godot, where we want to have the animations individually and then mix them in-engine, this is not necessary.
+In Blender, you can also place several animations in a strip and define transitions between the animations. This is useful to reuse several recurring animations for a longer animation in Blender, but for Godot, where we want to have the animations individually and then mix them in-engine, this is not necessary.
 
 #### Animation Trees
 
@@ -134,7 +134,7 @@ Above, it plays all animations one after the other, without transitions, which d
 {% endgi %}
 </div>
 
-Here you can see how the AnimationTree is structured, it looks very similar different engines. It is a node-based editor in which animations can be linked together in different ways to create a final animation. On the left you can see the "idle", "running", "aim" and "dying" animations that have been linked to a transition. This allows you to control which of the animations is currently active and that it also interpolates between the animations over a predefined period of time, when switching between them. The animations can be interrupted at any point, not just at the end of an animation. With "running" there is also a time scale in between, so the animation can be sped up or slowed down, if we link this to the character's movement speed, the animation is played faster if the character moves faster.
+Here you can see how the AnimationTree is structured, it looks very similar different engines. It is a node-based editor in which animations can be linked together in different ways to create a final animation. On the left you can see the "idle", "running", "aim" and "dying" animations that have been linked to a transition. This allows you to control which of the animations is currently active and that it also interpolates between the animations over a predefined period of time, when switching between them. The animations can be interrupted at any point, not just at the end of an animation. With "running" there is also a timescale in between, so the animation can be sped up or slowed down, if we link this to the character's movement speed, the animation is played faster if the character moves faster.
 
 If you change an animation via the transition, only this animation is played, either in an endless loop or, as with "dying", once and then the last animation frame is held. With OneShots, an animation can start and at the end of the animation it automatically returns to the previous animation. So if someone is hit, the corresponding animation is played once and then it would automatically return to the idle animation that is linked as "in" for the OneShot.
 
@@ -220,7 +220,7 @@ private async void _TargetSelected(unit target)
 }
 ```
 
-We prevent further actions in the UI here, deduct the action point for shooting, play the animation and only after the shooting animation has been played, the target unit receives damage and then plays its own animation instead of everything happening at once. Otherwise the enemy would receive damage and play its hit animation before the enemy has even fired the weapon.
+We prevent further actions in the UI here, deduct the action point for shooting, play the animation and only after the shooting animation has been played, the target unit receives damage and then plays its own animation instead of everything happening at once. Otherwise, the enemy would receive damage and play its hit animation before the enemy has even fired the weapon.
 
 ### Grid Movement
 
@@ -351,7 +351,7 @@ The vertices and edges of the mesh go around collision objects. When generating 
 
 #### Agent Avoidance
 
-In Godot, the ability to move around non-static obstacles is called Agent Avoidance. Unfortunately, the system is [not very clever](https://forum.godotengine.org/t/correct-way-to-implement-one-way-avoidance/45203/7). It works similarly to `MoveAndSlide`, except that you have to retrieve the adjusted velocity via an event later in order to execute the movement. The calculation of how one character should move to avoid another takes place asynchronously. Unfortunately, it only works when both characters dodge each other, if only one character is supposed to dodge the other, the character slides back and forth and gets stuck. According to some Github issues, there are also some other scenarios in which the agent avoidance does not work and it is not planned to change this, instead in future versions only a [note](https://github.com/godotengine/godot-docs/pull/8968/files) will be displayed, saying that the system has various restrictions. Unfortunately, the Agent Avoidance system was not really an option for me.
+In Godot, the ability to move around non-static obstacles is called Agent Avoidance. Unfortunately, the system is [not very clever](https://forum.godotengine.org/t/correct-way-to-implement-one-way-avoidance/45203/7). It works similarly to `MoveAndSlide`, except that you have to retrieve the adjusted velocity via an event later in order to execute the movement. The calculation of how one character should move to avoid another takes place asynchronously. Unfortunately, it only works when both characters dodge each other, if only one character is supposed to dodge the other, the character slides back and forth and gets stuck. According to some GitHub issues, there are also some other scenarios in which the agent avoidance does not work and it is not planned to change this, instead in future versions only a [note](https://github.com/godotengine/godot-docs/pull/8968/files) will be displayed, saying that the system has various restrictions. Unfortunately, the Agent Avoidance system was not really an option for me.
 
 I could also generate the NavigationMesh anew for each move. The problem with this is that CharacterBody3D is not taken into account in the NavigationMesh and you can't make any settings to change this. Adding a StaticBody to the character doesn't work either, because it doesn't look at the child nodes of a CharacterBody3D. Instead, I would have to change the hierarchy of the nodes to create the mesh, which comes with its own problems.
 
@@ -359,7 +359,7 @@ I could also generate the NavigationMesh anew for each move. The problem with th
 
 There are a couple of ways to solve the navigation problem, either I write my own navigation system and discard the Godot solution completely, or I try to still use it but create my own NavigationMesh that also handles CharacterBody3D properly.
 
-I spent some time creating the NavigationMesh myself, the difficulty was mainly understanding what format it expects the mesh to be in. I also have no way to display the already existing turquoise DebugMesh from the image above for self-created NavigationMeshes. The first attempt to create a NavigationMesh didn't work and its very difficult to debugg it, so I had to create my own DebugMesh for my solution in order to make progress. This has all taken up valuable time so far. I haven't finished the algorithm for it, so I won't post it here. The DebugMesh looks good, but it may well be that the orientation of the mesh is wrong, or that I need to filter out more. At the moment a square is created in the mesh for each square of the grid, rather than just making the mesh from the edges of the accessible area. When I continue programming the game I'll probably try to finish that, for now I've disabled collision between units. You can't select the sqaure of another unit as a target, but if a route leads through it, the unit simply moves through the other one.
+I spent some time creating the NavigationMesh myself, the difficulty was mainly understanding what format it expects the mesh to be in. I also have no way to display the already existing turquoise DebugMesh from the image above for self-created NavigationMeshes. The first attempt to create a NavigationMesh didn't work, and it's very difficult to debugg it, so I had to create my own DebugMesh for my solution in order to make progress. This has all taken up valuable time so far. I haven't finished the algorithm for it, so I won't post it here. The DebugMesh looks good, but it may well be that the orientation of the mesh is wrong, or that I need to filter out more. At the moment a square is created in the mesh for each square of the grid, rather than just making the mesh from the edges of the accessible area. When I continue programming the game I'll probably try to finish that, for now I've disabled collision between units. You can't select the sqaure of another unit as a target, but if a route leads through it, the unit simply moves through the other one.
 
 The other solution would be to have units just move in the grid that I have already calculated and then move from one cell to the next. Unfortunately, that wouldn't look so great, at least with "diagonal" movements.
 
@@ -394,7 +394,7 @@ This is an "orbit" camera, it always looks at a specific target. The camera is a
 
 Final camera position = target position + target rotation + camera position
 
-You can think of it like this: each of the operations adjust the coordinate origin, when we do a translation, the new center of the world is at the location of  the target translation, with the rotation the whole world rotates and then when we do a camera translation, it happens locally along the X axis, but because the world has been rotated by 45°, the X axis is now at a 45° angle relative to the world. This means that when we adjust the target rotation, the camera moves around the target position.
+You can think of it like this: each of the operations adjust the coordinate origin, when we do a translation, the new center of the world is at the location of the target translation, with the rotation the whole world rotates and then when we do a camera translation, it happens locally along the X axis, but because the world has been rotated by 45°, the X axis is now at a 45° angle relative to the world. This means that when we adjust the target rotation, the camera moves around the target position.
 
 ## The last stand
 
@@ -406,7 +406,7 @@ Some other stuff we had done, but which has not yet been described here:
 - a Colt as a ranged weapon, you could only select enemy units, which were then shot
 - units could wear armor that reduced the damage they received
 - you could cancel actions such as aiming at an opponent
-- when units took damage, they would play an animation and a number would appear above them representing the amount of damage taken and it disappear again with an animation
+- when units took damage, they would play an animation and a number would appear above them representing the amount of damage taken and it disappears again with an animation
 - when enemies can be targeted, a 2D frame is placed around the unit, the position and size of which adapts to the unit's bounding box
 - equipped weapons are in the hands of the characters and move with them
 - units turn towards the target you are aiming at

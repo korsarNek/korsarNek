@@ -3,7 +3,7 @@ title: Heating Plate
 date: 2024-02-29
 comment: true
 id: Hotplate
-language: en
+lang: en
 mermaid: true
 banner_img: /img/Banner2.webp
 image: /post_assets/Hotplate/Hotplate_printed.webp
@@ -29,7 +29,7 @@ Since my youth, I have also been involved with 3D modeling software, initially 3
 
 Another project of mine was to create an extension for FDM 3D printers that allows using two nozzles simultaneously, with the nozzles being independently raised and lowered to contact the object being printed. Currently, I use [Marlin](https://marlinfw.org/), but the hardware in my 3D printer is so weak that it can barely run the firmware, let alone an extension like this. I then looked online and came across [Klipper](https://www.klipper3d.org/), a firmware that connects the printer to a RaspberryPi and offloads most of the calculations to it. This means you don't need a powerful processor directly in the 3D printer. I am already using [OctoPi](https://octoprint.org/download/) to control my printer via a web interface and an additional touchscreen, making the switch to Klipper a logical step.
 
-My PCB should have an [RP2040](https://www.raspberrypi.com/documentation/microcontrollers/rp2040.html) processor, like the one used in RaspberryPi Zero. It is a small, inexpensive (~1€), and powerful processor that would work for controlling the additional IOs provided by my PCB. Klipper also allows connecting multiple minicomputers with the Klipper firmware to work together. My PCB would then be a second minicomputer in the 3D printer.
+My PCB should have an [RP2040](https://www.raspberrypi.com/documentation/microcontrollers/rp2040.html) processor, like the one used in RaspberryPi Zero. It is a small, inexpensive (~1€) and powerful processor that would work for controlling the additional IOs provided by my PCB. Klipper also allows connecting multiple minicomputers with the Klipper firmware to work together. My PCB would then be a second minicomputer in the 3D printer.
 
 I created the PCB with KiCad and had 5 of them produced in China by JLCPCB. I have a small soldering station with a soldering iron and a hot air gun. The RP2040 is a QFN (Quad Flat No-lead).
 
@@ -38,9 +38,9 @@ I created the PCB with KiCad and had 5 of them produced in China by JLCPCB. I ha
   ![RP2040 back](/post_assets/Hotplate/RP2040_back.webp)
 {% endgi %}
 
-This means the contacts only exist under the chip, and each contact is only 0.2mm in size, making it extremely difficult to solder. It might not be impossible, and some manage to do it, but not me; I've tried... I had the most success with the hot air gun, but I had to heat the chip for a long time and at high temperatures, to the point where the labeling on the chip had vanished. Unfortunately, the chip did not boot, and I assume it was damaged in the process. These packages are actually intended for a different soldering process, one where the entire PCB is heated, and the solder under the chip becomes liquid.
+This means the contacts only exist under the chip and each contact is only 0.2mm in size, making it extremely difficult to solder. It might not be impossible and some manage to do it, but not me; I've tried... I had the most success with the hot air gun, but I had to heat the chip for a long time and at high temperatures, to the point where the labeling on the chip had vanished. Unfortunately, the chip did not boot and I assume it was damaged in the process. These packages are actually intended for a different soldering process, one where the entire PCB is heated and the solder under the chip becomes liquid.
 
-A sensible person would have spent 100€ to get a soldering heating plate, but that person is not me. I wanted to make a heating plate myself, and it sounded like an interesting task, but of course, it was much more complicated than I had imagined.
+A sensible person would have spent €100 to get a soldering heating plate, but that person is not me. I wanted to make a heating plate myself and it sounded like an interesting task, but of course, it was much more complicated than I had imagined.
 
 ## Rough Overview of the Steps
 
@@ -50,7 +50,7 @@ I needed a heating plate that I could use for soldering. I found this [400W heat
 
 I would like to be able to switch the heating plate on or off via a microcontroller. For safety, I would galvanically isolate the parts of the circuit that involve mains voltage from those that don't, meaning there is no direct electrical connection between them. This is important in case of a fault, incorrect connection, or overvoltage. There are a few ways to achieve this, with optocouplers being the classic choice for signals. You can think of an optocoupler as a small LED connected to a solar cell; on one side, the LED shines, and on the other, the solar cell generates a small current, which can be used as a signal. I already had PC817 optocouplers lying around from other projects, they are mainly popular because they are quite cheap and sufficient for many tasks.
 
-I also have various transistors lying around, none for mains voltage, but I found the BT136 online, it is suitable and inexpensive. What I still needed was an optocoupler that could handle mains voltage. The PC817 has a transistor that can withstand up to 35V, but mains voltage is 230V [RMS](https://en.wikipedia.org/wiki/Root_mean_square), which is a maximum of ~310V. (The peak voltage of an RMS voltage is $√2*V$). The optocoupler must also withstand the same voltage in the opposite direction. Normal transistors work better in one direction than the other. The BT136 is a special type of transistor called a triac, designed for alternating voltages, which is what I need for an optocoupler, and I found it in the MOC3021M.
+I also have various transistors lying around, none for mains voltage, but I found the BT136 online, it is suitable and inexpensive. What I still needed was an optocoupler that could handle mains voltage. The PC817 has a transistor that can withstand up to 35V, but mains voltage is 230V [RMS](https://en.wikipedia.org/wiki/Root_mean_square), which is a maximum of ~310V. (The peak voltage of an RMS voltage is $√2*V$). The optocoupler must also withstand the same voltage in the opposite direction. Normal transistors work better in one direction than the other. The BT136 is a special type of transistor called a triac, designed for alternating voltages, which is what I need for an optocoupler and I found it in the MOC3021M.
 
 {% gi 3 3 %}
   ![BT136](/post_assets/Hotplate/BT136.webp)
@@ -60,7 +60,7 @@ I also have various transistors lying around, none for mains voltage, but I foun
 
 ### Design
 
-I wanted a heating element on top of a box, with 4 buttons for control, a display, and a USB port for data readout. What I found while soldering the RP2040 is that many more complex electronic components need to be heated to a certain temperature for a certain duration to ensure that the component is not destroyed during the soldering process. I wanted to store these heating models on a USB stick to easily use new models. In addition, I needed a connection for mains voltage. Inside the box, I would then reduce the mains voltage via an internal power supply to a level that the RP2040 can work with.
+I wanted a heating element on top of a box, with 4 buttons for control, a display and a USB port for data readout. What I found while soldering the RP2040 is that many more complex electronic components need to be heated to a certain temperature for a certain duration to ensure that the component is not destroyed during the soldering process. I wanted to store these heating models on a USB stick to easily use new models. In addition, I needed a connection for mains voltage. Inside the box, I would then reduce the mains voltage via an internal power supply to a level that the RP2040 can work with.
 
 ![RP2040 Heating Model](/post_assets/Hotplate/RP2040_curve.webp)
 
@@ -81,9 +81,9 @@ Initially, I chose the Arduino Pro Micro, although I had Arduinos lying around, 
 
 ![Arduino Pro Micro](/post_assets/Hotplate/Arduino_pro_micro.webp)
 
-I wrote a small program with the Arduino IDE that could display a UI on the display, process the 4 input buttons, and read the temperature via a thermistor.
+I wrote a small program with the Arduino IDE that could display a UI on the display, process the 4 input buttons and read the temperature via a thermistor.
 
-Thermistors are electrical resistors that have a precisely defined behavior at different temperatures, with the resistance in a circuit increasing at higher temperatures, and they are produced so that they have a very accurate behavior. The temperature is then measured by reading the voltage on the line. Thermistors are used as part of a voltage divider. For example, on one side, you have a 4.7k ohm resistor, and on the other, the thermistor, and you read the voltage in between. For example, there are 5V before the 4.7k resistor, and 0V after the thermistor. If the thermistor shows 14.1k at a temperature, the voltage between the resistors is 3/4 of 5V, i.e., 3.75V $(V*R1/(R1+R2))$. (There are Thermistors which are conductors i.e. semiconductors, whose resistance decreases with temperature, other than that the principle is the same)
+Thermistors are electrical resistors that have a precisely defined behavior at different temperatures, with the resistance in a circuit increasing at higher temperatures, and they are produced so that they have a very accurate behavior. The temperature is then measured by reading the voltage on the line. Thermistors are used as part of a voltage divider. For example, on one side, you have a 4.7k ohm resistor and on the other, the thermistor and you read the voltage in between. For example, there are 5V before the 4.7k resistor and 0V after the thermistor. If the thermistor shows 14.1k at a temperature, the voltage between the resistors is 3/4 of 5V, i.e., 3.75V $(V*R1/(R1+R2))$. (There are Thermistors which are conductors i.e. semiconductors, whose resistance decreases with temperature, other than that the principle is the same)
 
 ![Voltage Divider](/post_assets/Hotplate/voltage_divider.webp)
 
@@ -93,13 +93,13 @@ Unfortunately, the Arduino Micro Pro cannot function as a USB host, so it cannot
 
 ![Heating Plate](/post_assets/Hotplate/Hotplate_printed.webp)
 
-The 2kB of RAM was already quite tight due to the graphical interface, and I had trouble getting all the texts and images into memory. The RP2040 also comes with a full 120MHz and multiple cores, instead of just 16MHz and one core, a welcome upgrade.
+The 2kB of RAM was already quite tight due to the graphical interface and I had trouble getting all the texts and images into memory. The RP2040 also comes with a full 120MHz and multiple cores, instead of just 16MHz and one core, a welcome upgrade.
 
 ### Platform.IO
 
-Platform.IO is an extension for VSCode that theoretically makes it much easier to program microcontrollers and as an inexperienced C++ programmer, I don't have to deal with things like cmake. It also gives you a lot more possibilities than the Arduino IDE, such as being able to [arrange code in folders](https://arduino.stackexchange.com/questions/60656/split-up-arduino-code-into-multiple-files-using-arduino-ide) and control the order in which files are included.
+Platform.IO is an extension for VSCode that theoretically makes it much easier to program microcontrollers and as an inexperienced C++ programmer, I don't have to deal with things like CMake. It also gives you a lot more possibilities than the Arduino IDE, such as being able to [arrange code in folders](https://arduino.stackexchange.com/questions/60656/split-up-arduino-code-into-multiple-files-using-arduino-ide) and control the order in which files are included.
 
-Arduinos are well supported by Platform.IO, but the same is not true for the RP2040 I wanted to use. There is no official support for it, fortunately, someone built a [fork](https://github.com/maxgerhardt/platform-raspberrypi) that supports it, but because of Platform.IO's licensing model, where they want to be paid regularly by Raspberry to support the RP2040, even though Platform.IO itself hasn't programmed anything for the integration and it's already available, it will probably [never be merged](https://github.com/platformio/platform-raspberrypi/pull/36#issuecomment-1587171274).
+Arduinos are well-supported by Platform.IO, but the same is not true for the RP2040 I wanted to use. There is no official support for it, fortunately, someone built a [fork](https://github.com/maxgerhardt/platform-raspberrypi) that supports it, but because of Platform.IO's licensing model, where they want to be paid regularly by Raspberry to support the RP2040, even though Platform.IO itself hasn't programmed anything for the integration, and it's already available, it will probably [never be merged](https://github.com/platformio/platform-raspberrypi/pull/36#issuecomment-1587171274).
 
 ### C++
 
@@ -117,7 +117,7 @@ Following [code](https://github.com/adafruit/Adafruit_TinyUSB_Arduino/blob/e2918
 class Adafruit_USBH_MSC_BlockDevice : public FsBlockDeviceInterface {
 ```
 
-With [macros](https://learn.microsoft.com/en-us/cpp/preprocessor/macros-c-cpp?view=msvc-170), you can basically redefine anything, and it is often used to make dependencies interchangeable, in this case, `FsBlockDeviceInterface`, which is not a class that exists in the code but a macro that acts as a placeholder for a class. The code is only supposed to be compiled if there is a file named "SdFat.h" in the code, whether in your own code or in a used library. The library that has an SdFat.h should also define an `FsBlockDeviceInterface`. This is already a very shaky construct and requires either good documentation or someone to dig through the code. The documentation was of course not good. 
+With [macros](https://learn.microsoft.com/en-us/cpp/preprocessor/macros-c-cpp?view=msvc-170), you can basically redefine anything, and it is often used to make dependencies interchangeable, in this case, `FsBlockDeviceInterface`, which is not a class that exists in the code but a macro that acts as a placeholder for a class. The code is only supposed to be compiled if there is a file named "SdFat.h" in the code, whether in your own code or in a used library. The library that has an SdFat.h should also define a `FsBlockDeviceInterface`. This is already a very shaky construct and requires either good documentation or someone to dig through the code. The documentation was of course not good. 
 
 The first error looked like this:
 ```
@@ -142,7 +142,7 @@ Another problem that also exists in other languages, but I only came across with
 
 In languages like C#, `int` or `float` are often used. These are 32-bit number types that allow negative numbers. When programming firmware, however, you often deal with numbers where much more attention is paid to efficient memory usage. Instead of `int`, types like `unsigned long` or `size_t` are used. `unsigned long` is a 32-bit number without a sign, i.e., without negative numbers. `size_t` in this case is 8-bit, without a sign.
 
-Typically, you don't start with the highest possible value for numbers, but with 0, otherwise if you would do an addition, you would immediately have an overflow. With 0, you have a nice value in the middle and room to go up and down. With an `unsigned` number, you start with 0 already at the minimum, and as soon as you subtract something, you get an underflow. It doesn't matter if the result of a calculation would be positive, as long as any intermediate result of the calculation would become negative, you get an underflow.
+Typically, you don't start with the highest possible value for numbers, but with 0, otherwise if you would do an addition, you would immediately have an overflow. With 0, you have a nice value in the middle and room to go up and down. With an `unsigned` number, you start with 0 already at the minimum and as soon as you subtract something, you get an underflow. It doesn't matter if the result of a calculation would be positive, as long as any intermediate result of the calculation would become negative, you get an underflow.
 
 `unsigned long` is a typical number type in this code, for getting the current time. Some errors occurred when calculating timestamps.
 
@@ -154,7 +154,7 @@ Typically, you don't start with the highest possible value for numbers, but with
 
 I want to program a PID controller for my heating plate. PID stands for Proportional, Integral, Derivative. It controls the power of the heating element to reach the target temperature as accurately and quickly as possible. If you simply turn it on when the current temperature is lower than the target temperature and otherwise turn it off, it is usually quite inaccurate. It is called Bang-Bang mode. The temperature oscillates around the target temperature.
 
-The PID controller adjusts the power so that it reduces the strength near the target temperature (Proportional). But this often leads to it stopping just short of the target temperature, to prevent this, it accumulates the temperature difference over time and increases the power if a temperature difference remains for a longer time (Integral). Often, these two systems are already sufficient, but if you want to optimize it even more, you make sure that if the temperature curve flattens too early or you might overshoot the target, you adjust the power up or down to reach the target temperature faster (Derivative). A site that helped me a lot in understanding PID is [crystalinstruments](https://www.crystalinstruments.com/blog/2020/8/23/pid-control-theory).
+The PID controller adjusts the power so that it reduces the strength near the target temperature (Proportional). But this often leads to it stopping just short of the target temperature, to prevent this, it accumulates the temperature difference over time and increases the power if a temperature difference remains for a longer time (Integral). Often, these two systems are already sufficient, but if you want to optimize it even more, you make sure that if the temperature curve flattens too early, or you might overshoot the target, you adjust the power up or down to reach the target temperature faster (Derivative). A site that helped me a lot in understanding PID is [crystal instruments](https://www.crystalinstruments.com/blog/2020/8/23/pid-control-theory).
 
 A common method to find the 3 different factors for PID is to try it out manually, which gives you good results. It can take a couple of attempts, it would be approached iteratively. Especially for situations where you might only have a few devices, this is absolutely sufficient. I only have 1 device, but was fascinated by how algorithms can find these factors automatically.
 
@@ -173,7 +173,7 @@ During PID tuning, the heating element is first operated in a [Bang-Bang mode](h
   ![](/post_assets/Hotplate/bangbang2.webp)
 {% endgi %}
 
-I started by designing the algorithm as I understand PID and heating curves. Logically approaching what, in my understanding, would contribute to producing a good clean curve. Of course, this did not get me very far. So I went on to combine numbers with each other that would bring me close to the values I expected. I had several scenarios that did not work in a certain way and with the graphs from crystalinstruments, I could estimate which factor would roughly have to be adjusted in which direction to solve that. Then, I looked at which values are specific to the scenarios that are not working and tried to involve them in the calculation until I got a good result. In the end, I no longer understood what I was doing, but the result was good. It fulfilled all my test scenarios, a few scenarios could have had slightly more optimal values, but with this method, I only solve it approximately anyway. It is not a quite correct method and getting the last bit out is time-consuming. So the classic 80/20 rule, with 20% of the effort, I get about 80% to the solution, the remaining 20% would take 80% of the time and it is currently good enough.
+I started by designing the algorithm as I understand PID and heating curves. Logically approaching what, in my understanding, would contribute to producing a good clean curve. Of course, this did not get me very far. So I went on to combine numbers with each other that would bring me close to the values I expected. I had several scenarios that did not work in a certain way and with the graphs from crystal instruments, I could estimate which factor would roughly have to be adjusted in which direction to solve that. Then, I looked at which values are specific to the scenarios that are not working and tried to involve them in the calculation until I got a good result. In the end, I no longer understood what I was doing, but the result was good. It fulfilled all my test scenarios, a few scenarios could have had slightly more optimal values, but with this method, I only solve it approximately anyway. It is not a quite correct method and getting the last bit out is time-consuming. So the classic 80/20 rule, with 20% of the effort, I get about 80% to the solution, the remaining 20% would take 80% of the time, and it is currently good enough.
 
 {% gi 5 2-3 %}
   ![](/post_assets/Hotplate/Test1.webp)
@@ -187,13 +187,13 @@ I started by designing the algorithm as I understand PID and heating curves. Log
 
 An actually unnecessary point, that also took me quite a bit of time, was to find a way to convert my heating element, which can only be turned on or off, into something that can be partially turned on. Instead of just 0% or 100%, also 10%, 30%, 50%, or whatever I want. That is actually also necessary for PID to work, but the degree of accuracy with which I tried it was unnecessary.
 
-To control the heating element proportionally, the first part was to switch it with [PWM](https://www.elektronik-kompendium.de/sites/kom/0401111.htm). The heating element runs on alternating current, which runs here at about 50 Hertz. The PWM frequency was then set to the 50 Hertz of the mains line, for this, I installed a [Zero-Crossing](https://en.wikipedia.org/wiki/Zero-crossing_control) circuit on my PCB with the PC817, a few resistors, and diodes. This gives the microcontroller a signal when the mains voltage drops to 0 and the microcontroller adjusts the timing and frequency of the PWM signal accordingly.
+To control the heating element proportionally, the first part was to switch it with [PWM](https://www.elektronik-kompendium.de/sites/kom/0401111.htm). The heating element runs on alternating current, which runs here at about 50 Hertz. The PWM frequency was then set to the 50 Hertz of the mains line, for this, I installed a [Zero-Crossing](https://en.wikipedia.org/wiki/Zero-crossing_control) circuit on my PCB with the PC817, a few resistors and diodes. This gives the microcontroller a signal when the mains voltage drops to 0 and the microcontroller adjusts the timing and frequency of the PWM signal accordingly.
 
 A higher frequency for the PWM would also not have been possible due to the used components. A triac conducts current when there is voltage on the gate, it then remains on until the next zero point, regardless of whether there is still voltage on the gate or not.
 
 With the RP2040, I then determined the wait time to turn on the triac at, for example, 50% of the sine wave of the mains voltage for my 50% power. But the power of heating element actually depends on the area under the sine wave up to the zero point.
 
-At 0%, 50%, and 100%, the point at which the triac must be turned on is equal to the area, in all other cases, there is a certain deviation. 
+At 0%, 50% and 100%, the point at which the triac must be turned on is equal to the area, in all other cases, there is a certain deviation. 
 
 ![Sine Curve](/post_assets/Hotplate/Sinus_graph.webp)
 [Interactive Link](https://www.desmos.com/calculator/t0subox9jh)
@@ -202,12 +202,12 @@ After some research, I found formulas where you can calculate the area of a segm
 
 $Asegment = r² × arccos((r-h)/r) - (r-h) × √(2 × r × h - h²)$
 
-Which was a good idea, because the answer it gave me was that there is no closed solution for the rearranged formula, i.e., no formula that directly gives a solution, like the original formula. Instead you have to approach it with a numerical solution. That means, approximate the right value, there is no known formula that can do that directly (according to ChatGPT, but I also didn't find anything).
+Which was a good idea, because the answer it gave me was that there is no closed solution for the rearranged formula, i.e., no formula that directly gives a solution, like the original formula. Instead, you have to approach it with a numerical solution. That means, approximate the right value, there is no known formula that can do that directly (according to ChatGPT, but I also didn't find anything).
 
 After questioning ChatGPT some more, I learned about the [Bisection](https://en.wikipedia.org/wiki/Bisection_method) method, with some help from ChatGPT and Stackoverflow, I wrote a Bisection method for the formula in C#, which then gives me the values I need in 5% steps. In the firmware for the heating plate, I would then take this table and interpolate the remaining intermediate steps. I had also looked for a library that can already do Bisection, but with ChatGPT, it actually went so fast that it probably would have taken longer to find and connect a library that works.
 
 The difference between the percentage of the area of the sine curve and the percentage along the X-axis of the period of a sine curve was very small with the method. Just 5% until it then converges towards the middle.
-I had imagined the difference between the percentage numbers of area and X-point to be much larger and it seemed completely unnecessary that I had gone to the trouble.
+I had imagined the difference between the percentage numbers of area and X-point to be much larger, it seemed completely unnecessary that I had gone to the trouble.
 
 ```mermaid
 xychart-beta
@@ -270,13 +270,13 @@ So everything worked software-wise, for some reason, the packets did not arrive,
 
 ![Oscilloscope](/post_assets/Hotplate/Oszilloskop.webp)
 
-Fortunately, my oscilloscope can understand a few different hardware protocols, including I²C. With that, it turned out that most packets are complete, in fact, all packets are sent correctly. A detail of the I²C protocol is that each packet must be acknowledged by the receiver by pulling the data line down to 0 volts. The display tries to do that, but after a few packets, it only manages to do so with 1-2 volts, which is then interpreted by the microcontroller as not received, which then messes up the sending process.
+Fortunately, my oscilloscope can understand a few different hardware protocols, including I²C. With that, it turned out that most packets are complete, in fact, all packets are sent correctly. A detail of the I²C protocol is that each packet must be acknowledged by the receiver by pulling the data line down to 0 volts. The display tries to do that, but after a few packets, it only manages to do so with 1–2 volts, which is then interpreted by the microcontroller as not received, which then messes up the sending process.
 
 After some experimentation, it turned out that the error was based on 2 problems that had to be solved together. The first problem was, I powered the microcontroller and display via the 5V from the USB port. But the RP2040 has its own 3.3V power supply on board and all IO communication runs via 3.3V. Therefore the display, powered by 5V, assumed that communication also runs at 5V and had trouble sending good signals with a 3.3V line.
 The Arduino Pro Micro is a 5V system, which is why there were probably no problems there, the voltage of the power supply was the same as the voltage of the communication.
 The RaspberryPi Zero offers a pin to connect to the 3.3V of the RP2040, when I connected the display to it, the signal rate on the oscilloscope improved, but unfortunately was still too error-prone.
 
-Some Googling then revealed that pull-up resistors are recommended for I²C communication. They were not on the example circuits I looked at initially and also not necessary with the Arduino. Modifying the data cable to include a couple pull-up resistors was quite challening. I had a loose contact there for a while, which I managed to fix with pliers and a soldering iron. With that, the communication was finally clean and the display worked.
+Some Googling then revealed that pull-up resistors are recommended for I²C communication. They were not on the example circuits I looked at initially and also not necessary with the Arduino. Modifying the data cable to include a couple pull-up resistors was quite challenging. I had a loose contact there for a while, which I managed to fix with pliers and a soldering iron. With that, the communication was finally clean and the display worked.
 
 ### 3.3V ADC
 
@@ -296,7 +296,7 @@ I didn't look into it more closely, but changed the PWM control so that the freq
 
 I have already prepared a V2 in KiCad and Blender. I will greatly reduce the amount of cables and integrate much more into my PCB. The microcontroller, power supply, and 5V-to-3.3V module, all go directly onto my own PCB. Too many cables is a problem I've also had with other projects before. It's a chaos that gets out of control very quickly, but it has the advantage of being able to do adjustments afterwards without needing a new PCB right away. It's kind of useful for prototypes, but something that has no place in a final version.
 
-Something I will also change for future projects is to be much more generous with test pads. These are contacts on the PCB that are good for debugging, so I can more easily investigate what's going on on the PCB. I can place my multimeter or oscilloscope on the solder points of resistors or chips, but it's a hassle. I will also make test pads for lines with higher voltage with a through-hole. Normal pads are just a conductive area on the surface of the PCB; with a through-hole, a hole goes through the PCB, which makes it easier to stick probes in. If the line carries mains voltage, I want my hands far away from it, everything should be held by itself. If you get 5V, you don't feel it, with 220V AC it probably looks different. I haven't had that experience yet.
+Something I will also change for future projects is to be much more generous with test pads. These are contacts on the PCB that are good for debugging, so I can more easily investigate what's going on, on the PCB. I can place my multimeter or oscilloscope on the solder points of resistors or chips, but it's a hassle. I will also make test pads for lines with higher voltage with a through-hole. Normal pads are just a conductive area on the surface of the PCB; with a through-hole, a hole goes through the PCB, which makes it easier to stick probes in. If the line carries mains voltage, I want my hands far away from it, everything should be held by itself. If you get 5V, you don't feel it, with 220V AC it probably looks different. I haven't had that experience yet.
 
 Something I need to learn for the future is not to go too deep at the beginning to prevent working on parts that then turn out to be unnecessary, like the power of the sine wave.
 

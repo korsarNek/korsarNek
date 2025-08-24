@@ -96,7 +96,7 @@ class Youtube extends HTMLElement {
         this.setAttribute('banner-text', value);
     }
 
-    attributeChangedCallback(name, oldValue, newValue) {
+    attributeChangedCallback(name: string) {
         const iframe = this.querySelector('iframe');
         const banner = this.querySelector<HTMLElement>('.banner');
         if (iframe) {

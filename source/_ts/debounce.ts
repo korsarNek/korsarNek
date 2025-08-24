@@ -1,6 +1,6 @@
 export function debounce<TCallback extends (...args: any[]) => void>(callback: TCallback, timeout: number): (...args: Parameters<TCallback>) => void {
     let timerId: number | undefined = undefined;
-    return function <T>(this: T, ...args) {
+    return function <T>(this: T, ...args: any[]) {
         const context = this;
         if (timerId === undefined) {
             timerId = window.setTimeout(() => {
@@ -23,13 +23,13 @@ export function delayedLastCancellable<TCallback extends (...args: any[]) => voi
     let context: any = undefined;
     let lastArgs: any[] | undefined = undefined;
     return {
-        action: function<T>(this: T, ...args) {
+        action: function<T>(this: T, ...args: any[]) {
             context = this;
             lastArgs = args;
             if (timerId === undefined) {
                 timerId = window.setTimeout(() => {
                     timerId = undefined;
-                    return callback.apply(context, lastArgs);
+                    return callback.apply(context, lastArgs!);
                 }, timeout);
             }
         },

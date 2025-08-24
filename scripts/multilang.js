@@ -132,6 +132,10 @@ function indexGenerator(locals) {
     const paginationDir = config.pagination_dir || 'page';
     const path = config.index_generator.path || '';
 
+    for (const post of locals.posts.toArray()) {
+        post.language ??= post.lang
+    }
+
     return languages.reduce((acc, lang) => {
         const langPrefix = lang === defaultLang ? '' : lang;
         const langPosts = filterByLanguage(posts, lang);
@@ -285,7 +289,7 @@ function tagGenerator(locals) {
 
     const result = tagPages.reduce((generatedPages, p) => {
         const { source, __page, _id, date, full_source, layout, path, permalink, raw, title ,...pageProperties } = p;
-
+        
         const pages = tags.reduce((result, tag) => {
             if (!tag.length) return result;
 
