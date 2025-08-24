@@ -11,15 +11,15 @@ export default defineConfig({
     copyPublicDir: false,
     rollupOptions: {
       input: {
-        threejs: './source/_ts/three.ts',
-        youtube: './source/_ts/youtube.ts',
+        threejs: './src/source/three.ts',
+        youtube: './src/source/youtube.ts',
       },
       plugins: [
         copy({
           targets: [
             { src: 'node_modules/three/examples/jsm/libs/draco', dest: 'public/js/libs' },
           ]
-        })
+        }),
       ]
     },
     assetsDir: ".",

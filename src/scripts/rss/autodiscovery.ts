@@ -1,15 +1,9 @@
-'use strict';
+import Hexo from 'hexo';
+import { getLanguages } from '../helpers'
 
-const { getLanguages } = require('../helpers');
-
-/**
- * 
- * @param {string} renderedHtml 
- * @returns 
- */
-function autodiscoveryInject(renderedHtml) {
+export default function autodiscoveryInject(this: Hexo, renderedHtml: string) {
   const { config } = this;
-  const defaultLang = config.permalink_defaults.lang || config.permalink_defaults.language;
+  const defaultLang = config.permalink_defaults.lang || config.permalink_defaults.language || 'en';
   const { feed } = config;
   const { types } = feed;
   const url_for = this.extend.helper.store.url_for;
@@ -31,5 +25,3 @@ function autodiscoveryInject(renderedHtml) {
 
   return renderedHtml.replace(/<head>(?!<\/head>).+?<\/head>/s, str => str.replace('</head>', `${autodiscoveryTag}</head>`));
 }
-
-module.exports = autodiscoveryInject;

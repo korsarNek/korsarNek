@@ -2,12 +2,12 @@
   "name": "hexo-site",
   "version": "0.0.0",
   "private": true,
+  "type": "commonjs",
   "scripts": {
-    "compile": "tsc",
-    "build": "vite build --config vite.config.frontend.ts && hexo generate",
+    "build": "tsc && vite build --config vite.config.frontend.ts && vite build --config vite.config.backend.ts && hexo generate",
     "clean": "hexo clean",
-    "deploy": "hexo deploy",
-    "server": "hexo server",
+    "dev": "nodemon -e js,ts --watch src --exec \"vite build --config vite.config.frontend.ts && vite build --config vite.config.backend.ts && hexo server --drafts\"",
+    "preview": "hexo server -s",
     "webp": "bin/webp.js"
   },
   "hexo": {
@@ -34,6 +34,7 @@
     "@types/js-yaml": "^4.0.9",
     "@types/markdown-it": "^14.1.2",
     "@types/nunjucks": "^3.2.6",
+    "nodemon": "^3.1.10",
     "rollup-plugin-copy": "^3.5.0",
     "sharp": "^0.33.5",
     "vite": "^5.4.2"

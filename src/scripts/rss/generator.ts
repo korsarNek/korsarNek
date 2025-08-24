@@ -1,12 +1,10 @@
-'use strict';
-
-const nunjucks = require('nunjucks');
+import nunjucks from 'nunjucks'
 const env = new nunjucks.Environment();
-const { readFileSync } = require('fs');
-const { encodeURL, gravatar, full_url_for } = require('hexo-util');
-const Locals = require('hexo/dist/hexo/locals');
-const Post = require('hexo/dist/hexo/post');
-const { getLanguages } = require('../helpers');
+
+import { readFileSync } from 'node:fs'
+import { encodeURL, gravatar, full_url_for } from 'hexo-util'
+import { getLanguages } from '../helpers'
+import Hexo, { GeneratorFunction, RssProperties } from 'hexo';
 
 env.addFilter('uriencode', str => {
   return encodeURL(str);
@@ -16,22 +14,9 @@ env.addFilter('noControlChars', str => {
   return str.replace(/[\x00-\x1F\x7F]/g, ''); // eslint-disable-line no-control-regex
 });
 
-/**
- * @typedef {Object} RssProperties
- * @property {string} input
- * @property {string} output
- */
-
-/**
- * 
- * @param {Locals} locals 
- * @param {RssProperties} properties
- * @param {string} name
- * @returns 
- */
-module.exports = function (locals, properties, name) {
+export default function (this: Hexo, locals: Parameters<GeneratorFunction>[0], properties: RssProperties, name: string) {
   const { config } = this;
-  const defaultLang = config.permalink_defaults.lang || config.permalink_defaults.language;
+  const defaultLang = config.permalink_defaults.lang || config.permalink_defaults.language || 'en';
   const { email, feed, url: urlCfg } = config;
   const { icon: iconCfg, limit, order_by } = feed;
   const title = feed.title || config.title;

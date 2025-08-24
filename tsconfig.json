@@ -19,7 +19,6 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "outDir": "public/js"
-  },                             
-  "include": ["source/_ts"]
+    "outDir": "public/js",
+  },
 }

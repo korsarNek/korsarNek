@@ -32,10 +32,8 @@ class WarehouseWrapper extends Array {
     }
 }
 
-function createWarehouseWrapper(array) {
+export default function createWarehouseWrapper(array) {
     if ('toArray' in array)
         array = array.toArray();
     return new WarehouseWrapper(...array);
 }
-
-module.exports = createWarehouseWrapper;

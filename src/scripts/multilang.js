@@ -1,5 +1,5 @@
 const pagination = require('hexo-pagination');
-const createWarehouseWrapper = require('./warehouse');
+import createWarehouseWrapper from './warehouse'
 const url = require('url');
 const fs = require('fs');
 const yaml = require('js-yaml');

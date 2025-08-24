@@ -1,5 +1,7 @@
-/* global hexo */
-'use strict';
+import Hexo from 'hexo';
+import feedFn from './generator'
+
+declare const hexo: Hexo
 
 hexo.config.feed = Object.assign({
   type: 'atom',
@@ -13,12 +15,10 @@ hexo.config.feed = Object.assign({
 
 const config = hexo.config.feed;
 
-const feedFn = require('./generator');
-
 if (typeof config.types !== 'object') {
   throw 'feed.types is not an object.';
 }
-
+hexo.config.feed
 for (const [name, properties] of Object.entries(config.types)) {
   hexo.extend.generator.register(name, locals => {
     return feedFn.call(hexo, locals, properties, name);
