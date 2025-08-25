@@ -5,6 +5,7 @@ import './loading-circle';
 import './touch-hint';
 import { TouchHint } from './touch-hint';
 import { OrbitControls } from './orbit-controls';
+import { animate } from './animation';
 
 type ThreeJsElement = HTMLElement & {
 	threejs: {
@@ -15,6 +16,17 @@ type ThreeJsElement = HTMLElement & {
 		animation?: AnimationMixer,
 	}
 };
+
+function getProperties() {
+	const style = window.getComputedStyle(document.body)
+	const lightIntensity = parseFloat(style.getPropertyValue('--light-intensity'));
+	const sunHeight = parseFloat(style.getPropertyValue('--sun-height'))
+
+	return {
+		lightIntensity,
+		sunHeight
+	}
+}
 
 function initializeThreeJs(element: HTMLElement) {
 	const model = element.getAttribute('model');
@@ -31,6 +43,8 @@ function initializeThreeJs(element: HTMLElement) {
 	if (!isRunningOnBrowser() || isBot()) {
 		return;
 	}
+
+	const { lightIntensity, sunHeight } = getProperties()
 
 	element.tabIndex = 0;
 	resizeObserver.observe(element);
@@ -56,25 +70,40 @@ function initializeThreeJs(element: HTMLElement) {
 
 	const sky = new Sky();
 	sky.scale.setScalar(450000);
-	const phi = MathUtils.degToRad(87);
-	const theta = MathUtils.degToRad(135);
-	const sunPosition = new Vector3().setFromSphericalCoords(1, phi, theta);
+	const sunLocation = {
+		phi: sunHeight,
+		theta: 135,
+	}
+	const sunPosition = new Vector3().setFromSphericalCoords(1, MathUtils.degToRad(sunLocation.phi), MathUtils.degToRad(sunLocation.theta));
 
 	sky.material.uniforms.sunPosition.value = sunPosition;
 
 	scene.add(sky);
 
-	const hemiLight = new HemisphereLight(0xffffff, 0xffffff, 0.6);
+	const hemiLight = new HemisphereLight(0xffffff, 0xffffff, 0.6 * lightIntensity);
 	hemiLight.color.setHSL(0.6, 0.75, 0.5);
 	hemiLight.groundColor.setHSL(0.095, 0.5, 0.5);
 	hemiLight.position.set(0, 500, 0);
 	scene.add(hemiLight);
 
-	const dirLight = new DirectionalLight(0xffffff, 1.6);
+	const dirLight = new DirectionalLight(0xffffff, 1.6 * lightIntensity);
 	dirLight.position.set(sunPosition.x, sunPosition.y, sunPosition.z);
 	dirLight.position.multiplyScalar(500);
 	dirLight.castShadow = true;
-	scene.add( dirLight );
+	scene.add(dirLight);
+	
+	window.addEventListener('theme-change', () => {
+		const { lightIntensity, sunHeight } = getProperties()
+
+		animate(hemiLight, { intensity: 0.6 * lightIntensity }, 500)
+		animate(dirLight, { intensity: 1.6 * lightIntensity }, 500)
+		animate(sunLocation, { phi: sunHeight }, 500).onUpdate(() => {
+			const sunPosition = new Vector3().setFromSphericalCoords(1, MathUtils.degToRad(sunLocation.phi), MathUtils.degToRad(sunLocation.theta));
+			sky.material.uniforms.sunPosition.value = sunPosition;
+			dirLight.position.set(sunPosition.x, sunPosition.y, sunPosition.z);
+			dirLight.position.multiplyScalar(500);
+		})
+	})
 	
 	const loader = new GLTFLoader();
 	const dracoLoader = new DRACOLoader();

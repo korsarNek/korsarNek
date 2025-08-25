@@ -2,12 +2,16 @@
     --dark-banner-text: black;
     --graph-color: #0077aa;
     --nav-item-hover: #86cdff;
+    --light-intensity: 2;
+    --sun-height: 80;
 }
 
 [data-user-color-scheme="dark"] {
     --graph-color: #30a9de;
     --highlight-bg-color: #202730;
     --nav-item-hover: white;
+    --light-intensity: 1;
+    --sun-height: 87;
 }
 
 body {

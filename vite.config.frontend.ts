@@ -11,8 +11,9 @@ export default defineConfig({
     copyPublicDir: false,
     rollupOptions: {
       input: {
-        threejs: './src/source/three.ts',
-        youtube: './src/source/youtube.ts',
+        threejs: './src/frontend/three.ts',
+        youtube: './src/frontend/youtube.ts',
+        theme: './src/frontend/theme.ts'
       },
       plugins: [
         copy({

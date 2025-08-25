@@ -99,5 +99,5 @@ Fluid.plugins.fancyBox = function (selector) {
                 }
             },
         }
-        });
+    });
 };

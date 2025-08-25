@@ -9,3 +9,4 @@ _multiconfig.yml
 .yarn/*
 !.yarn/releases
 scripts
+source/_drafts
