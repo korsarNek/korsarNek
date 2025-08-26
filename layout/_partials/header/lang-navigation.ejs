@@ -53,6 +53,7 @@
           <li class="nav-item" id="search-btn">
             <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
               <i class="iconfont icon-search"></i>
+              <span><% if(page.lang == 'de') { %>Suche<% } else { %>Search<% } %></span>
             </a>
           </li>
           <% import_js(theme.static_prefix.internal_js, 'local-search.js') %>
@@ -61,6 +62,7 @@
           <li class="nav-item" id="color-toggle-btn">
             <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
               <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+              <span><% if(page.lang == 'de') { %>Helligkeit<% } else { %>Brightness<% } %></span>
             </a>
           </li>
         <% } %>
