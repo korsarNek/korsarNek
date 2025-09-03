@@ -112,10 +112,8 @@
                 var match_content = content.substring(start, end);
 
                 // highlight all keywords
-                keywords.forEach(function(keyword) {
-                  var regS = new RegExp(keyword, 'gi');
-                  match_content = match_content.replace(regS, (match) => '<span class="search-word">' + match + '</span>');
-                });
+                var regex = new RegExp(keywords.join('|'), 'gi');
+                match_content = match_content.replace(regex, (match) => '<span class="search-word">' + match + '</span>');
 
                 resultHTML += '<p class=\'search-list-content\'>' + (cutOffStart ? '...' : '') + match_content + (cutOffEnd ? '...' : '') + '</p>';
               }
