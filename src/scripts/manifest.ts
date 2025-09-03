@@ -1,37 +1,39 @@
+import Hexo from "hexo";
+
 const fs = require('node:fs');
 
-let manifestContent = null;
-function loadManifest() {
+declare const hexo: Hexo
+
+interface ManifestEntry {
+    file: string
+    name: string
+    src?: string
+    isEntry?: boolean
+    imports?: string[]
+}
+
+let manifestContent: Record<string, ManifestEntry> | null = null;
+function loadManifest(): Record<string, ManifestEntry> {
     if (manifestContent === null) {
         manifestContent = JSON.parse(fs.readFileSync(__dirname + '/../public/js/build/.vite/manifest.json'));
     }
-    return manifestContent;
+    return manifestContent!;
 }
 
-/**
- * 
- * @param {string} name 
- * @returns 
- */
-function manifest(name) {
+function manifest(this: Hexo, name: string) {
     const json = loadManifest();
-    for (const [key, entry] of Object.entries(json)) {
+    for (const entry of Object.values(json)) {
         if (entry.name === name) {
             return `<script type="module" src="${this.url_for('js/build/' + entry.file)}" ></script>`;
         }
     }
 
-    console.error("No manifest entry found with name.", name);
+    throw Error(`No manifest entry found with name "${name}"`);
 }
 
 hexo.extend.helper.register('manifest', manifest);
 
-/**
- * 
- * @param {string} url 
- * @param {string} attribute 
- */
-function myjs(url, attribute) {
+function myjs(this: Hexo, url: string, attribute: string) {
     if (url.startsWith('manifest:')) {
         return manifest.call(this, url.substring('manifest:'.length).trim());
     }

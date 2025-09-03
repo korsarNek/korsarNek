@@ -176,3 +176,7 @@ my-youtube {
     margin-top: 1.5rem;
     margin-bottom: 1.5rem;
 }
+
+.search-list-content {
+    white-space: pre-line;
+}

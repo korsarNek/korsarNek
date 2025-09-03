@@ -92,17 +92,46 @@ declare module 'hexo' {
   }
 
   interface PostData {
-    title?: string | number;
-    layout?: string;
-    slug?: string | number;
-    path?: string;
-    [prop: string]: any;
+    title: string
+    date: Date
+    layout: string
+    comments: boolean
+    layout: string
+    content: string
+    source: string
+    slug: string
+    photos?: string[]
+    raw: string
+    published: boolean
+    excerpt?: string
+    more?: string
+    slug?: string | number
+    [prop: string]: any
   }
 
   interface BaseObj {
       path: string;
       data?: any;
       layout?: string | string[];
+  }
+
+  interface PageData {
+    title: string
+    date: Date
+    updated: Date
+    comments: boolean
+    layout: string
+    content: string
+    source: string
+    path: string
+    raw: string
+    excerpt?: string
+    more?: string
+    posts: PostData[]
+  }
+
+  export interface Page extends PageData {
+    script_snippets: string[]
   }
 
   export class Locals {
@@ -122,9 +151,8 @@ declare module 'hexo' {
   type GeneratorReturnType = BaseObj | BaseObj[] | undefined;
   export type GeneratorFunction = (locals: ReturnType<Locals['toObject']>, callback?: NodeJSLikeCallback<any>) => GeneratorReturnType | Promise<GeneratorReturnType>;
 
-  type StoreFunctionReturn = Promise<GeneratorReturnType>;
   interface StoreFunction {
-      (locals: any): StoreFunctionReturn;
+      (...locals: any[]): Promise<any> | any
   }
   interface Store {
       [key: string]: StoreFunction;
@@ -138,6 +166,14 @@ declare module 'hexo' {
     get(name: string): StoreFunction;
     register(fn: GeneratorFunction): void;
     register(name: string, fn: GeneratorFunction): void;
+  }
+
+  class Helper {
+    store: Store
+    constructor()
+    list(): Store
+    get(name: string): StoreFunction
+    register(name: string, fn: StoreFunction): void
   }
   
   interface Extend {
@@ -154,8 +190,12 @@ declare module 'hexo' {
     tag: Tag;
   }
 
-  export default class Hexo {
+  export default class Hexo extends Extensions {
     config: Config
     extend: Extend
+
+    url_for(path: string, options = {}): string
+    js_ex(base: string, relative: string, ex = '')
+    page: PageDPageata
   }
 }

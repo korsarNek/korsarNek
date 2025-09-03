@@ -13,7 +13,8 @@ export default defineConfig({
       input: {
         threejs: './src/frontend/three.ts',
         youtube: './src/frontend/youtube.ts',
-        theme: './src/frontend/theme.ts'
+        theme: './src/frontend/theme.ts',
+        'local-search': './src/frontend/local-search.ts',
       },
       plugins: [
         copy({
